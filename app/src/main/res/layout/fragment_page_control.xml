@@ -14,6 +14,7 @@
         android:layout_marginStart="3dp"
         android:layout_marginBottom="683dp"
         android:ems="10"
+        android:text="Enter URL"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -43,16 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="353dp"
         android:src="@android:drawable/ic_media_ff"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="227dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="3dp"
-        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

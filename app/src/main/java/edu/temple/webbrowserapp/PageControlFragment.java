@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -28,7 +29,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 public class PageControlFragment extends Fragment {
 
-    TextView display;
+
     EditText urlText;
     ImageButton goButton;
     ImageButton nextButton;
@@ -37,6 +38,16 @@ public class PageControlFragment extends Fragment {
     passInfoInterface parentActivity;
 
     public PageControlFragment() {
+
+    }
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof passInfoInterface) {
+            parentActivity = (passInfoInterface) context;
+        } else {
+            throw new RuntimeException("You must implement passInfoInterface to attach this fragment");
+        }
 
     }
 
@@ -51,49 +62,25 @@ public class PageControlFragment extends Fragment {
                              Bundle savedInstanceState) {
         View l = inflater.inflate(R.layout.fragment_page_control, container, false);
 
-        display = (TextView)l.findViewById(R.id.textView);
         urlText = (EditText) l.findViewById(R.id.EditTextURL);
         goButton = (ImageButton) l.findViewById(R.id.Go);
         nextButton = (ImageButton) l.findViewById(R.id.Next);
         backButton = (ImageButton) l.findViewById(R.id.Back);
 
-        final Handler responseHandler = new Handler(new Handler.Callback() {
-
-            @Override
-            public boolean handleMessage(Message msg) {
-                display.setText((String) msg.obj);
-                return false;
-            }
-        });
 
         goButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                final String urlString = "temple.edu";
-
-                Thread t = new Thread() {
-                    public void run() {
-                        try {
-                            URL url = new URL(urlString);
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-                            String response = reader.readLine();
-                            Message msg = Message.obtain();
-                            msg.obj = response;
-                            responseHandler.sendMessage(msg);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                t.start();
+                final String urlString = urlText.getText().toString();
+                parentActivity.DisplayInfo(urlString);
             }
         });
 
         return l;
     }
     public interface passInfoInterface{
-      //  void displayColorInfo(int color);
+        void DisplayInfo(String website);
     }
 
 
