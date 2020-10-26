@@ -60,7 +60,9 @@ public class PageControlFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    public void updateTheURL(String text){
+        urlText.setText(text);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,40 +76,44 @@ public class PageControlFragment extends Fragment {
 
 
         goButton.setOnClickListener(new View.OnClickListener() {
-            //FragmentManager fm = getFragmentManager();
             @Override
             public void onClick(View v) {
                 Thread t = new Thread();
                 String urlString = urlText.getText().toString();
+                String e = "https://";
+                e = e.concat(urlString);
+                urlText.setText(e);
                 try {
-                    parentActivity.DisplayInfo(urlString);
+                    parentActivity.DisplayInfo(e);
+
                 }
-                catch(MalformedURLException e) {
-                        e.printStackTrace();
+                catch(MalformedURLException u) {
+                       u.printStackTrace();
                     }
                 t.start();
             }
         });
+
         backButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
               parentActivity.goBackInfo();
             }
         });
+
         nextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 parentActivity.goForwardInfo();
             }
         });
+
         return l;
     }
+
     public interface passInfoInterface{
         void DisplayInfo(String website) throws MalformedURLException;
         void goBackInfo();
         void goForwardInfo();
     }
-
-
-
 }

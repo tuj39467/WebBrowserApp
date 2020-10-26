@@ -6,10 +6,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.webkit.WebView;
+import android.widget.EditText;
 
 import java.net.MalformedURLException;
 
-public class BrowserActivity extends AppCompatActivity implements PageControlFragment.passInfoInterface{
+public class BrowserActivity extends AppCompatActivity implements PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface{
 
     PageControlFragment pc = new PageControlFragment();
     PageViewerFragment pv = new PageViewerFragment();
@@ -23,7 +24,7 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
         fm.beginTransaction()
                 .add(R.id.container_1,pc)
                 .add(R.id.container_2,pv)
-              //  .addToBackStack("frag")
+                .addToBackStack(null)
                 .commit();
     }
 
@@ -38,4 +39,8 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
         pv.goForward();
     }
 
+    @Override
+    public void updateURL(String text) {
+       pc.updateTheURL(text);
+    }
 }
