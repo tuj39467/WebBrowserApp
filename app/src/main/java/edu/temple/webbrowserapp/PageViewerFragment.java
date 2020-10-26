@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +32,19 @@ public class PageViewerFragment extends Fragment {
     public void setInfo(String urlString) throws MalformedURLException {
         wv.loadUrl(urlString);
     }
+    public void goBack(){
+        if(wv.canGoBack()){
+            wv.canGoBack();
+            wv.goBack();
+        }
+    }
+    public void goForward(){
+        if(wv.canGoForward()){
+            wv.canGoForward();
+            wv.goForward();
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

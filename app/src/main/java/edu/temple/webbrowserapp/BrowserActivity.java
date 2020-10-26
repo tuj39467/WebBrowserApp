@@ -1,6 +1,8 @@
 package edu.temple.webbrowserapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -11,19 +13,29 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
 
     PageControlFragment pc = new PageControlFragment();
     PageViewerFragment pv = new PageViewerFragment();
-
+    FragmentManager fm = getSupportFragmentManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager().beginTransaction()
+
+        fm.beginTransaction()
                 .add(R.id.container_1,pc)
                 .add(R.id.container_2,pv)
+              //  .addToBackStack("frag")
                 .commit();
     }
 
     public void DisplayInfo(String website) throws MalformedURLException {
         pv.setInfo(website);
     }
+
+    public void goBackInfo() {
+       pv.goBack();
+    }
+    public void goForwardInfo() {
+        pv.goForward();
+    }
+
 }
