@@ -44,7 +44,7 @@ public class PageControlFragment extends Fragment {
 
     public PageControlFragment() {
 
-    }
+    }//
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
