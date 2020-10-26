@@ -10,9 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -72,15 +75,28 @@ public class PageControlFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                final String urlString = urlText.getText().toString();
-                parentActivity.DisplayInfo(urlString);
+                Thread t = new Thread();
+
+                    String urlString = urlText.getText().toString();
+                    Log.d("tag","Get urlString: " + urlString);
+                    try
+
+                    {
+                        parentActivity.DisplayInfo(urlString);
+                    } catch(
+                    MalformedURLException e)
+
+                    {
+                        e.printStackTrace();
+                    }
+                t.start();
             }
         });
 
         return l;
     }
     public interface passInfoInterface{
-        void DisplayInfo(String website);
+        void DisplayInfo(String website) throws MalformedURLException;
     }
 
 
