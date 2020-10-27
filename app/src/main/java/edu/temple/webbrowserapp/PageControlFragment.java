@@ -64,6 +64,7 @@ public class PageControlFragment extends Fragment {
     }
     public void updateTheURL(String text){
         urlText.setText(text);
+
     }
 
     @Override
@@ -82,20 +83,22 @@ public class PageControlFragment extends Fragment {
             public void onClick(View v) {
                 Thread t = new Thread();
                 String urlString = urlText.getText().toString();
-                String e = "https://";
-                e = e.concat(urlString);
-                urlText.setText(e);
+                if(!urlString.startsWith("https://")){
+
+                    urlString = "https://" + urlString;
+                    urlText.setText(urlString);
+                }
+
                 try {
-                    parentActivity.DisplayInfo(e);
+                    parentActivity.DisplayInfo(urlString);
 
                 }
                 catch(MalformedURLException u) {
-                       u.printStackTrace();
-                    }
+                    u.printStackTrace();
+                }
                 t.start();
             }
         });
-
         backButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
