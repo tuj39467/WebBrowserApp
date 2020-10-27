@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Handler;
 import android.os.Message;
@@ -44,7 +45,7 @@ public class PageControlFragment extends Fragment {
 
     public PageControlFragment() {
 
-    }//
+    }
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
@@ -59,6 +60,7 @@ public class PageControlFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
     }
     public void updateTheURL(String text){
         urlText.setText(text);
@@ -110,6 +112,7 @@ public class PageControlFragment extends Fragment {
 
         return l;
     }
+
 
     public interface passInfoInterface{
         void DisplayInfo(String website) throws MalformedURLException;

@@ -4,31 +4,25 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 public class PageViewerFragment extends Fragment {
     WebView wv;
     updateInterface parentActivity;
     public PageViewerFragment() {
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        wv.saveState(outState);
     }
 
     public void setInfo(String urlString) throws MalformedURLException {
@@ -46,6 +40,7 @@ public class PageViewerFragment extends Fragment {
             wv.goForward();
         }
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,13 +49,30 @@ public class PageViewerFragment extends Fragment {
 
 
         wv = (WebView) l.findViewById(R.id.WebView);
-        wv.setWebViewClient(new WebViewClient());
+        WebViewClient wc = new WebViewClient() {
+
+            public void updateURL(WebView web, String url, boolean reload) {
+                parentActivity.updateURL(url);
+            }
+
+            public void onLoad(WebView web, String url) {
+                super.onLoadResource(web, url);
+            }
+        };
+
+        wv.setWebViewClient(wc);
+        wv.getSettings().setJavaScriptEnabled(true);
+
+        if(savedInstanceState != null){
+            wv.restoreState(savedInstanceState);
+        }
+
        /* wv.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 parentActivity.updateURL(wv.getUrl());
                 return true;
-            }
-        });*/
+            }*/
+//        });
 
 
 
@@ -70,9 +82,12 @@ public class PageViewerFragment extends Fragment {
    @Override
    public void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
+       this.setRetainInstance(true);
    }
     public interface updateInterface{
         void updateURL(String text);
+
+       // void setInfo(String url) throws MalformedURLException;
     }
 
 }
