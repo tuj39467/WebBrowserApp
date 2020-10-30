@@ -50,8 +50,7 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
     }
     public void DisplayInfo(String website) throws MalformedURLException {
         pv.setInfo(website);
-    }//
-//
+    }
     public void goBackInfo() {
        pv.goBack();
     }
@@ -66,5 +65,8 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
         if(b = true){
             pv = new PageViewerFragment();
         }
+    }
+    public void itemSelected(int item){
+
     }
 }
