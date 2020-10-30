@@ -16,10 +16,32 @@
 
     <FrameLayout
         android:id="@+id/container_2"
-        android:layout_width="731dp"
-        android:layout_height="334dp"
+        android:layout_width="476dp"
+        android:layout_height="333dp"
         android:layout_marginTop="77dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/container_3"
+        android:layout_width="248dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="78dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/container_4"
+        android:layout_width="253dp"
+        android:layout_height="266dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="144dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>

@@ -14,6 +14,8 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
 
     PageControlFragment pc;
     PageViewerFragment pv;
+    BrowserControlFragment bc;
+    PageListFragment pl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,13 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
             pv = new PageViewerFragment();
             fm.beginTransaction().add(R.id.container_2,pv).commit();
         }
+        bc = (BrowserControlFragment)fm.findFragmentById((R.id.container_3));
+
+        pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
+        if(pl == null){
+            pl = new PageListFragment();
+            fm.beginTransaction().add(R.id.container_4,pl).commit();
+        }
     }
 
     public void onSaveInstanceState(@NonNull Bundle state)
@@ -49,9 +58,13 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
     public void goForwardInfo() {
         pv.goForward();
     }
-    
     public void updateURL(String text) {
        pc.updateTheURL(text);
     }
 
+    public void createNewInstance(Boolean b){
+        if(b = true){
+            pv = new PageViewerFragment();
+        }
+    }
 }
