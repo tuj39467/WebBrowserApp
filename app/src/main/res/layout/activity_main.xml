@@ -11,29 +11,35 @@
         android:layout_height="match_parent">
 
         <FrameLayout
+            android:id="@+id/container_5"
+            android:layout_width="408dp"
+            android:layout_height="609dp"
+            android:layout_marginTop="139dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <FrameLayout
+                android:id="@+id/container_2"
+                android:layout_width="406dp"
+                android:layout_height="588dp">
+
+            </FrameLayout>
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/container_1"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_marginTop="114dp"
+            android:layout_width="414dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="72dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/container_2"
-            android:layout_width="411dp"
-            android:layout_height="521dp"
-            android:layout_marginTop="202dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </FrameLayout>
-
-        <FrameLayout
             android:id="@+id/container_3"
-            android:layout_width="409dp"
-            android:layout_height="113dp"
+            android:layout_width="408dp"
+            android:layout_height="74dp"
             android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,7 +1,9 @@
 package edu.temple.webbrowserapp;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,7 +17,20 @@ public class BrowserControlFragment extends Fragment {
 
     ImageButton page_Button;
 
+    ViewPagerInterface viewPagerFace;
+
     public BrowserControlFragment() {
+
+    }
+
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof BrowserControlFragment.ViewPagerInterface) {
+            viewPagerFace = (BrowserControlFragment.ViewPagerInterface) context;
+        } else {
+            throw new RuntimeException("You must implement ViewPagerInterface to attach this fragment");
+        }
 
     }
 
@@ -33,10 +48,14 @@ public class BrowserControlFragment extends Fragment {
         page_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               viewPagerFace.createNewInstance();
             }
         });
 
         return l;
+    }
+
+    public interface ViewPagerInterface{
+        void createNewInstance();
     }
 }

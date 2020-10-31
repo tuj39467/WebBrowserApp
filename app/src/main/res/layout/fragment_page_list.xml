@@ -6,14 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".PageListFragment">
 
+    <ListView android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="false"/>
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="415dp"
-        android:layout_height="369dp"
-        android:layout_marginStart="2dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context="abhiandroid.com.listexample.MainActivity"></ListView>
+    <TextView android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
