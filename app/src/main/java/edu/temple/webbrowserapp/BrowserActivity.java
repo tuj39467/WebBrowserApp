@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BrowserActivity extends AppCompatActivity implements PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
 
@@ -50,11 +51,11 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
         bc = new BrowserControlFragment();
         fm.beginTransaction().add(R.id.container_3,bc).commit();
 
-        pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
+   /*     pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
         if(pl == null){
             pl = new PageListFragment();
             fm.beginTransaction().add(R.id.container_4,pl).commit();
-        }
+        }*/
         p = (PagerFragment) fm.findFragmentById(R.id.container_5);
         if(p == null){
             p = new PagerFragment();
@@ -69,6 +70,9 @@ public class BrowserActivity extends AppCompatActivity implements PageViewerFrag
     }
     public void DisplayInfo(String website) throws MalformedURLException {
         pv.setInfo(website);
+    }
+    public void changeTitle(String pageTitle){
+        Objects.requireNonNull(getSupportActionBar()).setTitle(pageTitle);
     }
     public void goBackInfo() {
        pv.goBack();

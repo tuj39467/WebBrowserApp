@@ -1,6 +1,7 @@
 package edu.temple.webbrowserapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class PageViewerFragment extends Fragment {
     }
     public interface updateInterface{
         void updateURL(String text);
+        void changeTitle(String pageTitle);
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -67,8 +69,23 @@ public class PageViewerFragment extends Fragment {
 
         WebViewClient wc = new WebViewClient() {
             @Override
+            public void onPageStarted(WebView w, String url, Bitmap favicon) {
+                super.onPageStarted(w, url, favicon);
+                String pageTitle = w.getTitle();
+                parentActivity.changeTitle(pageTitle);
+
+            }
+            @Override
             public void doUpdateVisitedHistory(WebView web, String url, boolean reload) {
                 parentActivity.updateURL(url);
+                String pageTitle = web.getTitle();
+                parentActivity.changeTitle(pageTitle);
+            }
+            @Override
+            public void onPageFinished(WebView w, String url){
+                super.onPageFinished(w,url);
+                String pageTitle = w.getTitle();
+                parentActivity.changeTitle(pageTitle);
             }
             @Override
             public void onLoadResource(WebView web, String url) {
