@@ -38,6 +38,7 @@ public class PageViewerFragment extends Fragment {
     public interface updateInterface{
         void updateURL(String text);
         void changeTitle(String pageTitle);
+      //  void createNewInstance();
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -73,7 +74,7 @@ public class PageViewerFragment extends Fragment {
                 super.onPageStarted(w, url, favicon);
                 String pageTitle = w.getTitle();
                 parentActivity.changeTitle(pageTitle);
-
+//                parentActivity.createNewInstance();
             }
             @Override
             public void doUpdateVisitedHistory(WebView web, String url, boolean reload) {
