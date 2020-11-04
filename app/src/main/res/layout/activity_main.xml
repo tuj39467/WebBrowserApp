@@ -11,19 +11,13 @@
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/container_5"
-            android:layout_width="409dp"
-            android:layout_height="614dp"
-            android:layout_marginTop="134dp"
+            android:id="@+id/container_2"
+            android:layout_width="416dp"
+            android:layout_height="602dp"
+            android:layout_marginTop="129dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <FrameLayout
-                android:id="@+id/container_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </FrameLayout>
         </FrameLayout>
 
         <FrameLayout

@@ -1,32 +1,38 @@
 package edu.temple.webbrowserapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BrowserActivity extends AppCompatActivity implements PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
+public class BrowserActivity extends AppCompatActivity implements PageListFragment.selectInterface, PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
 
     PageControlFragment pc;
     PageViewerFragment pv;
     BrowserControlFragment bc;
     PageListFragment pl;
     PagerFragment p;
-    ViewPager vp;
+  //  ViewPager vp;
+ //   ListView list;
 
+    FragmentManager fm;
     ArrayList<PageViewerFragment> fragments;
-   // ViewPager vp;
     FragmentAdapter fa;
 
     @SuppressLint("WrongViewCast")
@@ -48,53 +54,28 @@ public class BrowserActivity extends AppCompatActivity implements PagerFragment.
         pv = (PageViewerFragment) fm.findFragmentById(R.id.container_2);
         if(pv == null){
             pv = new PageViewerFragment();
-            fm.beginTransaction().add(R.id.container_2,pv).commit();
+            fragments.add(pv);
+           // fm.beginTransaction().add(R.id.container_2,pv).commit();
         }
 
         bc = (BrowserControlFragment)fm.findFragmentById((R.id.container_3));
         bc = new BrowserControlFragment();
         fm.beginTransaction().add(R.id.container_3,bc).commit();
 
-        p = (PagerFragment) fm.findFragmentById(R.id.container_5);
-        if(p == null) {
+        p = (PagerFragment) fm.findFragmentById(R.id.container_2);
+        p = new PagerFragment();
+        fm.beginTransaction().add(R.id.container_2, p).commit();
+       /* if(p == null) {
             p = new PagerFragment();
             fm.beginTransaction().add(R.id.container_5, p).commit();
+           // fm.beginTransaction().add(R.id.container_5, p).commit();
         }
-
-
-       // vp = findViewById(R.id.container_5);
-      /*  vp.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return fragments.get(position);
-            }
-            @Override
-            public int getCount() {
-                return fragments.size();
-            }
-
-        });
-        findViewById(R.id.container_3).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                fragments.add(new PageViewerFragment());
-                vp.getAdapter().notifyDataSetChanged();
-            }
-        });
 */
-
-
-
-   /*     pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
+        /* pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
         if(pl == null){
             pl = new PageListFragment();
             fm.beginTransaction().add(R.id.container_4,pl).commit();
         }*/
-
-
-                //   vp=findViewById(R.id.container_5);
-                // vp.setAdapter(fa);
     }
 
     public void onSaveInstanceState(@NonNull Bundle state)
@@ -107,6 +88,7 @@ public class BrowserActivity extends AppCompatActivity implements PagerFragment.
     }
     public void changeTitle(String pageTitle){
         Objects.requireNonNull(getSupportActionBar()).setTitle(pageTitle);
+
     }
     public void goBackInfo() {
        pv.goBack();
@@ -119,7 +101,10 @@ public class BrowserActivity extends AppCompatActivity implements PagerFragment.
     }
 
     public void createNewInstance(){
+        final String TAG = "test";
+         Log.d(TAG,"Fragment array size: " + fragments.size() );
         fragments.add(new PageViewerFragment());
+//        fm.beginTransaction().add(R.id.container_2,pv).commit();
         p.createInstance();
     }
     public void createInstance2(ViewPager vp){
@@ -127,6 +112,12 @@ public class BrowserActivity extends AppCompatActivity implements PagerFragment.
         vp.getAdapter().notifyDataSetChanged();
     }
     public void itemSelected(int item){
+    //   pv = fragments.get(item);
 
     }
+
 }
+
+
+
+

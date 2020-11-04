@@ -1,5 +1,6 @@
 package edu.temple.webbrowserapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -13,19 +14,21 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class PagerFragment extends Fragment {
-   // Adapter adapt;
     ViewPager vp;
-  //  FragmentManager fm;
+    ArrayList<PageViewerFragment>fragments2;
     int position;
     passInterface parentActivity;
+    FragmentAdapter fa;
 
     public PagerFragment() {
 
@@ -63,16 +66,12 @@ public class PagerFragment extends Fragment {
 
         vp = l.findViewById(R.id.viewPager);
 
+        FragmentAdapter fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
+
         if(savedInstanceState != null){
             position = savedInstanceState.getInt("position");
+//            fragments2.get(position);
         }
-        //vp.setOnTouchListener(Vi);
-      //  vp.getAdapter().notifyDataSetChanged();
-        //else{
-
-        //}
-
-        //vp.getAdapter();
 
         return l;
     }
