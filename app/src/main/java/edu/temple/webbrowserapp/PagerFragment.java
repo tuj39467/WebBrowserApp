@@ -34,7 +34,7 @@ public class PagerFragment extends Fragment {
 
     }
     public interface passInterface{
-        void itemSelected(int item);
+       // void itemSelected(int item);
         void createInstance2(ViewPager vp);
     }
 
@@ -66,12 +66,20 @@ public class PagerFragment extends Fragment {
 
         vp = l.findViewById(R.id.viewPager);
 
-        FragmentAdapter fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
+       // fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
+
+//        vp.setAdapter(fa);
+  //      vp.getAdapter().notifyDataSetChanged();
 
         if(savedInstanceState != null){
             position = savedInstanceState.getInt("position");
+            vp.setCurrentItem(position);
 //            fragments2.get(position);
+//            vp.setAdapter(fa);
+  //          vp.getAdapter().notifyDataSetChanged();
         }
+//        vp.setAdapter(fa);
+//        fragments2.get(position);
 
         return l;
     }

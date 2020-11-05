@@ -73,7 +73,7 @@ public class PageViewerFragment extends Fragment {
             public void onPageStarted(WebView w, String url, Bitmap favicon) {
                 super.onPageStarted(w, url, favicon);
                 String pageTitle = w.getTitle();
-                parentActivity.changeTitle(pageTitle);
+              ///  parentActivity.changeTitle(pageTitle);
 //                parentActivity.createNewInstance();
             }
             @Override
@@ -86,7 +86,7 @@ public class PageViewerFragment extends Fragment {
             public void onPageFinished(WebView w, String url){
                 super.onPageFinished(w,url);
                 String pageTitle = w.getTitle();
-                parentActivity.changeTitle(pageTitle);
+             //   parentActivity.changeTitle(pageTitle);
             }
             @Override
             public void onLoadResource(WebView web, String url) {

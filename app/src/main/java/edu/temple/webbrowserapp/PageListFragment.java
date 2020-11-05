@@ -1,6 +1,7 @@
 package edu.temple.webbrowserapp;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,16 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PageListFragment extends Fragment {
-
+    ArrayList<String> pageTitles;
     ListView list;
     selectInterface parentActivity;
     TextView tv;
+    int position;
     private ArrayList<PageViewerFragment> pages;
 
     public PageListFragment() {
@@ -38,40 +42,59 @@ public class PageListFragment extends Fragment {
 
     }
 
+    public void passList(ArrayList<String> pageList){
+        pageTitles = pageList;
+    }
 
+    public void createInstance(){
+        parentActivity.passList(list);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(getArguments() != null){
-      //      pages = (ArrayList<PageViewerFragment>) getArguments().getBundle();
-        }
+        this.setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View l = inflater.inflate(R.layout.fragment_page_list, container, false);
-
-        //list = l.findViewById(R.id.listView);
-        if(l instanceof ListView){
+       // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        list = l.findViewById(R.id.listView);
+      /*  if(l instanceof ListView){
             Context context = l.getContext();
             list = (ListView)l;
          //   list.setAdapter(new FragmentAdapter(getFragmentManager()));
+        }*/
+        if(savedInstanceState != null){
+            position = savedInstanceState.getInt("position");
+//            fragments2.get(position);
+//            vp.setAdapter(fa);
+            //          vp.getAdapter().notifyDataSetChanged();
         }
+    //    BaseAdapter ListAdapter = new ListAdapter(getContext(),pageTitles);
+//        list.setAdapter(ListAdapter);
+  //      list.getAdapter();
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                parentActivity.itemSelected(position);
+                tv.setText(parent.getItemAtPosition(position).toString());
+                //parentActivity.itemSelected(position);
             }
         });
 
         return l;
     }
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt("position",position);
+    }
 
     public interface selectInterface{
         void itemSelected(int item);
+        void passList(ListView list);
     }
 }

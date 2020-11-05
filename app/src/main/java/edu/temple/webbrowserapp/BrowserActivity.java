@@ -11,9 +11,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 
@@ -28,12 +30,10 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     BrowserControlFragment bc;
     PageListFragment pl;
     PagerFragment p;
-  //  ViewPager vp;
- //   ListView list;
-
-    FragmentManager fm;
     ArrayList<PageViewerFragment> fragments;
     FragmentAdapter fa;
+    ArrayList<String> pageTitles;
+    BaseAdapter ListAdapter;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -41,9 +41,19 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //fragments = new ArrayList<>();
+
+    //    pageTitles = new ArrayList<>();
+
+      //  ListAdapter = new ListAdapter(this, pageTitles);
+
         fragments = new ArrayList<>();
+        pageTitles = new ArrayList<>();
+        ListAdapter = new ListAdapter(this, pageTitles);
+
 
         FragmentManager fm = getSupportFragmentManager();
+   //     fa = new FragmentAdapter(fm,fragments);
         fa = new FragmentAdapter(fm,fragments);
 
         pc = (PageControlFragment)fm.findFragmentById(R.id.container_1);
@@ -51,31 +61,44 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             pc = new PageControlFragment();
             fm.beginTransaction().add(R.id.container_1,pc).commit();
         }
-        pv = (PageViewerFragment) fm.findFragmentById(R.id.container_2);
-        if(pv == null){
-            pv = new PageViewerFragment();
-            fragments.add(pv);
-           // fm.beginTransaction().add(R.id.container_2,pv).commit();
+
+//        p = (PagerFragment) fm.findFragmentById(R.id.container_2);
+
+        if(bc == null) {
+            bc = (BrowserControlFragment) fm.findFragmentById((R.id.container_3));
+            bc = new BrowserControlFragment();
+            fm.beginTransaction().add(R.id.container_3, bc).commit();
         }
 
-        bc = (BrowserControlFragment)fm.findFragmentById((R.id.container_3));
-        bc = new BrowserControlFragment();
-        fm.beginTransaction().add(R.id.container_3,bc).commit();
-
-        p = (PagerFragment) fm.findFragmentById(R.id.container_2);
-        p = new PagerFragment();
-        fm.beginTransaction().add(R.id.container_2, p).commit();
-       /* if(p == null) {
-            p = new PagerFragment();
-            fm.beginTransaction().add(R.id.container_5, p).commit();
-           // fm.beginTransaction().add(R.id.container_5, p).commit();
-        }
-*/
-        /* pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
+        pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
         if(pl == null){
             pl = new PageListFragment();
             fm.beginTransaction().add(R.id.container_4,pl).commit();
-        }*/
+        }
+
+        p = (PagerFragment) fm.findFragmentById(R.id.container_2);
+       // pv =(PageViewerFragment) fm.findFragmentById(R.id.container_2);
+        if(pv == null) {
+            //p = new PagerFragment();
+            pv = new PageViewerFragment();
+            fragments.add(pv);
+       //     fm.beginTransaction().add(R.id.container_2, p).commit();
+        }
+        if(p == null) {
+            p = new PagerFragment();
+         //   pv = new PageViewerFragment();
+         //   fragments.add(pv);
+            fm.beginTransaction().add(R.id.container_2, p).commit();
+        }
+
+   /*     else{
+            pv = new PageViewerFragment();
+            fragments.add(pv);
+       //     fm.beginTransaction().add(R.id.container_2, p).commit();
+        }
+*/
+
+
     }
 
     public void onSaveInstanceState(@NonNull Bundle state)
@@ -88,6 +111,13 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
     public void changeTitle(String pageTitle){
         Objects.requireNonNull(getSupportActionBar()).setTitle(pageTitle);
+
+        final String TAG1 = "test";
+
+       // pageTitles.add(pageTitle);
+        Log.d(TAG1,"List array size: " + pageTitles.size() );
+        pageTitles.add(pageTitle);
+        pl.passList(pageTitles);
 
     }
     public void goBackInfo() {
@@ -102,9 +132,10 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
     public void createNewInstance(){
         final String TAG = "test";
-         Log.d(TAG,"Fragment array size: " + fragments.size() );
+        Log.d(TAG,"Fragment array size: " + fragments.size() );
         fragments.add(new PageViewerFragment());
-//        fm.beginTransaction().add(R.id.container_2,pv).commit();
+
+        pl.createInstance();
         p.createInstance();
     }
     public void createInstance2(ViewPager vp){
@@ -112,8 +143,13 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         vp.getAdapter().notifyDataSetChanged();
     }
     public void itemSelected(int item){
-    //   pv = fragments.get(item);
 
+    }
+
+    @Override
+    public void passList(ListView list) {
+        list.setAdapter(ListAdapter);
+        list.getAdapter();
     }
 
 }
