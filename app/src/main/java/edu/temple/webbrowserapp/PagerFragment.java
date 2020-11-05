@@ -66,10 +66,10 @@ public class PagerFragment extends Fragment {
 
         vp = l.findViewById(R.id.viewPager);
 
-       // fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
+        //fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
 
-//        vp.setAdapter(fa);
-  //      vp.getAdapter().notifyDataSetChanged();
+      //  vp.setAdapter(fa);
+    //    vp.getAdapter().notifyDataSetChanged();
 
         if(savedInstanceState != null){
             position = savedInstanceState.getInt("position");
