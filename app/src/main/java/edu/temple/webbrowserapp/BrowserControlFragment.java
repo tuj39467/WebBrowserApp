@@ -38,6 +38,13 @@ public class BrowserControlFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setRetainInstance(true);
+
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState){
+        super.onSaveInstanceState(outState);
+       // outState.putInt("position",position);
+        outState.putAll(outState);
     }
 
     @Override

@@ -20,14 +20,15 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class PagerFragment extends Fragment {
+public class PagerFragment extends Fragment implements Serializable {
     ViewPager vp;
-    ArrayList<PageViewerFragment>fragments2;
     int position;
     passInterface parentActivity;
+    ArrayList<PageViewerFragment> fragments2;
     FragmentAdapter fa;
 
     public PagerFragment() {
@@ -49,15 +50,28 @@ public class PagerFragment extends Fragment {
 
     }
     public void createInstance(){
-//        vp.getAdapter().notifyDataSetChanged();
           parentActivity.createInstance2(vp);
     }
 
+   /* public static PagerFragment newInstance(ArrayList<PageViewerFragment>array) {
+        ArrayList<PageViewerFragment> fragments2 = new ArrayList<>();
+        Bundle args = new Bundle();
+        args.putSerializable("array", array);
+        fragments2.setArguments(args);
+
+        return fragments2;
+    }*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null) {
+            //vp.setCurrentItem(savedInstanceState.getInt("item"));
+          //  vp.setCurrentItem(savedInstanceState.getInt("position"));
+        }
         this.setRetainInstance(true);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,27 +80,27 @@ public class PagerFragment extends Fragment {
 
         vp = l.findViewById(R.id.viewPager);
 
-        //fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
-
-      //  vp.setAdapter(fa);
-    //    vp.getAdapter().notifyDataSetChanged();
+        fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
 
         if(savedInstanceState != null){
             position = savedInstanceState.getInt("position");
-            vp.setCurrentItem(position);
-//            fragments2.get(position);
-//            vp.setAdapter(fa);
-  //          vp.getAdapter().notifyDataSetChanged();
+          /*  fragments2 = new ArrayList<>();
+            fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
+            vp.setCurrentItem(position);*/
         }
-//        vp.setAdapter(fa);
-//        fragments2.get(position);
 
         return l;
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState){
         super.onSaveInstanceState(outState);
+
+        //outState.putInt("item", vp.getCurrentItem());
+       // outState.putInt(currentItem);
+
         outState.putInt("position",position);
+        outState.putAll(outState);
+        outState.getBundle("fragments");
     }
 
 }

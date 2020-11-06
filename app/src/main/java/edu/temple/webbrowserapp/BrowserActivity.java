@@ -13,17 +13,20 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BrowserActivity extends AppCompatActivity implements PageListFragment.selectInterface, PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
+public class BrowserActivity extends AppCompatActivity implements Serializable, PageListFragment.selectInterface, PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
 
     PageControlFragment pc;
     PageViewerFragment pv;
@@ -35,60 +38,70 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     ArrayList<String> pageTitles;
     BaseAdapter ListAdapter;
 
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragments = new ArrayList<>();
-        pageTitles = new ArrayList<>();
-        ListAdapter = new ListAdapter(this, pageTitles);
+        if (fragments == null) {
+            fragments = new ArrayList<>();
+          //  if(pv == null){
 
-
-        FragmentManager fm = getSupportFragmentManager();
-   //     fa = new FragmentAdapter(fm,fragments);
-        fa = new FragmentAdapter(fm,fragments);
-
-        pc = (PageControlFragment)fm.findFragmentById(R.id.container_1);
-        if(pc == null){
-            pc = new PageControlFragment();
-            fm.beginTransaction().add(R.id.container_1,pc).commit();
+                //onSaveInstanceState(b);
+           // }
         }
+        FragmentManager fm = getSupportFragmentManager();
+        if (fa == null) {
+            fa = new FragmentAdapter(fm, fragments);
+        }
+        if (pageTitles == null) {
+            pageTitles = new ArrayList<>();
+        }
+        if (ListAdapter == null) {
+            ListAdapter = new ListAdapter(this, pageTitles);
+        }
+        //   fragments = new ArrayList<>();
+        //  pageTitles = new ArrayList<>();
+        //   ListAdapter = new ListAdapter(this, pageTitles);
+
+
+        // fa = new FragmentAdapter(fm,fragments);
+
+        pc = (PageControlFragment) fm.findFragmentById(R.id.container_1);
+        if (pc == null) {
+            pc = new PageControlFragment();
+            fm.beginTransaction().add(R.id.container_1, pc).commit();
+        }
+
         bc = (BrowserControlFragment) fm.findFragmentById((R.id.container_3));
-        if(bc == null) {
-          //  bc = (BrowserControlFragment) fm.findFragmentById((R.id.container_3));
+        if (bc == null) {
             bc = new BrowserControlFragment();
             fm.beginTransaction().add(R.id.container_3, bc).commit();
         }
 
-        pl = (PageListFragment)fm.findFragmentById(R.id.container_4);
-        if(pl == null){
+        pl = (PageListFragment) fm.findFragmentById(R.id.container_4);
+        if (pl == null) {
             pl = new PageListFragment();
-            fm.beginTransaction().add(R.id.container_4,pl).commit();
+            fm.beginTransaction().add(R.id.container_4, pl).commit();
         }
-/*
-        if(pv == null) {
-           // p = new PagerFragment();
-            pv = new PageViewerFragment();
-            fragments.add(pv);
-            // fm.beginTransaction().add(R.id.container_2, pv).commit();
-        }
-        else{
 
-        }
-*/
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
-        if(p == null) {
-            p = new PagerFragment();
-            fm.beginTransaction().add(R.id.container_2, p).commit();
-        }
-    }
+     //   if (pv == null) {
+            if (p == null) {
+                p = new PagerFragment();
+                pv = new PageViewerFragment();
+                fragments.add(pv);
+                fm.beginTransaction().add(R.id.container_2, p).commit();
+            }
 
+    }
     public void onSaveInstanceState(@NonNull Bundle state)
     {
         super.onSaveInstanceState(state);
-        state.putAll(state);
+        state.getBundle("fragments");
+
     }
     public void DisplayInfo(String website) throws MalformedURLException {
         pv.setInfo(website);
@@ -97,12 +110,10 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         Objects.requireNonNull(getSupportActionBar()).setTitle(pageTitle);
 
         final String TAG1 = "test";
-
+        pl.createInstance();
+      //  p.createInstance();
         pageTitles.add(pageTitle);
         Log.d(TAG1,"List array size: " + pageTitles.size() );
-        pageTitles.add(pageTitle);
-       // pl.passList(pageTitles);
-
     }
     public void goBackInfo() {
        pv.goBack();
@@ -117,14 +128,12 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     public void createNewInstance(){
         final String TAG = "test";
         Log.d(TAG,"Fragment array size: " + fragments.size() );
-        pv = new PageViewerFragment();
-        //fragments.add(new PageViewerFragment());
-        fragments.add(pv);
-        pl.createInstance();
+        fragments.add(new PageViewerFragment());
         pl.passList(pageTitles);
         p.createInstance();
     }
     public void createInstance2(ViewPager vp){
+       // p.createInstance();
         vp.setAdapter(fa);
         vp.getAdapter().notifyDataSetChanged();
     }
@@ -137,7 +146,6 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         list.setAdapter(ListAdapter);
         list.getAdapter();
     }
-
 }
 
 

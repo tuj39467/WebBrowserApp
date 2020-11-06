@@ -53,6 +53,10 @@ public class PageListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null) {
+            //vp.setCurrentItem(savedInstanceState.getInt("item"));
+          //  list.setCsavedInstanceState.getInt("position"));
+        }
         this.setRetainInstance(true);
     }
 
@@ -60,30 +64,23 @@ public class PageListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View l = inflater.inflate(R.layout.fragment_page_list, container, false);
-       // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         list = l.findViewById(R.id.listView);
-      /*  if(l instanceof ListView){
-            Context context = l.getContext();
-            list = (ListView)l;
-         //   list.setAdapter(new FragmentAdapter(getFragmentManager()));
-        }*/
         if(savedInstanceState != null){
             position = savedInstanceState.getInt("position");
 //            fragments2.get(position);
 //            vp.setAdapter(fa);
             //          vp.getAdapter().notifyDataSetChanged();
         }
-    //    BaseAdapter ListAdapter = new ListAdapter(getContext(),pageTitles);
-//        list.setAdapter(ListAdapter);
-  //      list.getAdapter();
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                tv.setText(parent.getItemAtPosition(position).toString());
+            //    tv.setText(parent.getItemAtPosition(position).toString());
                 //parentActivity.itemSelected(position);
             }
         });
+
+
 
         return l;
     }
@@ -91,6 +88,7 @@ public class PageListFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putInt("position",position);
+        outState.putAll(outState);
     }
 
     public interface selectInterface{
