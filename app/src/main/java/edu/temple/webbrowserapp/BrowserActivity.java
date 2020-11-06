@@ -17,6 +17,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -37,7 +38,7 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
     FragmentAdapter fa;
     ArrayList<String> pageTitles;
     BaseAdapter ListAdapter;
-
+    FragmentManager fm;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -47,12 +48,12 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
 
         if (fragments == null) {
             fragments = new ArrayList<>();
-          //  if(pv == null){
-
-                //onSaveInstanceState(b);
-           // }
         }
-        FragmentManager fm = getSupportFragmentManager();
+       // FragmentManager fm = getSupportFragmentManager();
+        if(fm == null){
+            fm = getSupportFragmentManager();
+        }
+
         if (fa == null) {
             fa = new FragmentAdapter(fm, fragments);
         }
@@ -62,12 +63,6 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
         if (ListAdapter == null) {
             ListAdapter = new ListAdapter(this, pageTitles);
         }
-        //   fragments = new ArrayList<>();
-        //  pageTitles = new ArrayList<>();
-        //   ListAdapter = new ListAdapter(this, pageTitles);
-
-
-        // fa = new FragmentAdapter(fm,fragments);
 
         pc = (PageControlFragment) fm.findFragmentById(R.id.container_1);
         if (pc == null) {
@@ -87,15 +82,21 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
             fm.beginTransaction().add(R.id.container_4, pl).commit();
         }
 
+       /* if(pv == null){
+            pv = new PageViewerFragment();
+            fragments.add(pv);
+        }
+*/
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
-     //   if (pv == null) {
-            if (p == null) {
-                p = new PagerFragment();
-                pv = new PageViewerFragment();
-                fragments.add(pv);
-                fm.beginTransaction().add(R.id.container_2, p).commit();
-            }
-
+        if (p == null) {
+            p = PagerFragment.newInstance(fragments);
+            fm.beginTransaction().add(R.id.container_2, p).commit();
+        }
+      /*  if(fm.findFragmentById(R.id.container_2) == null) {
+            p = new PagerFragment();
+            pv = new PageViewerFragment();
+            fm.beginTransaction().replace(R.id.container_2, pv).commit();
+        }*/
     }
     public void onSaveInstanceState(@NonNull Bundle state)
     {
@@ -111,10 +112,15 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
 
         final String TAG1 = "test";
         pl.createInstance();
-      //  p.createInstance();
         pageTitles.add(pageTitle);
         Log.d(TAG1,"List array size: " + pageTitles.size() );
     }
+
+    @Override
+    public void savePageViewer(WebView wv) {
+        p.saveViewer(wv);
+    }
+
     public void goBackInfo() {
        pv.goBack();
     }
@@ -128,12 +134,16 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
     public void createNewInstance(){
         final String TAG = "test";
         Log.d(TAG,"Fragment array size: " + fragments.size() );
-        fragments.add(new PageViewerFragment());
+       // p.createInstance();
+        pv = new PageViewerFragment();
+        fragments.add(pv);
         pl.passList(pageTitles);
         p.createInstance();
+       // p.passPager(fragments);
+
+
     }
     public void createInstance2(ViewPager vp){
-       // p.createInstance();
         vp.setAdapter(fa);
         vp.getAdapter().notifyDataSetChanged();
     }
@@ -146,6 +156,7 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
         list.setAdapter(ListAdapter);
         list.getAdapter();
     }
+
 }
 
 

@@ -38,6 +38,7 @@ public class PageViewerFragment extends Fragment {
     public interface updateInterface{
         void updateURL(String text);
         void changeTitle(String pageTitle);
+        void savePageViewer(WebView wv);
       //  void createNewInstance();
     }
     @Override
@@ -81,6 +82,7 @@ public class PageViewerFragment extends Fragment {
                 parentActivity.updateURL(url);
                 String pageTitle = web.getTitle();
                 parentActivity.changeTitle(pageTitle);
+                parentActivity.savePageViewer(web);
             }
             @Override
             public void onPageFinished(WebView w, String url){
