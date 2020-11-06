@@ -28,19 +28,26 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class PagerFragment extends Fragment implements Serializable {
+public class PagerFragment extends Fragment {
     ViewPager vp;
     int position;
     passInterface parentActivity;
     ArrayList<PageViewerFragment> fragments2;
-    FragmentAdapter fa;
+    FragmentAdapter fa;//= new FragmentAdapter(getChildFragmentManager(),fragments2);
     WebView wv;
 
     public PagerFragment() {
 
     }
+   /* public static PageViewerFragment newInstance() {
+        PageViewerFragment f = new PageViewerFragment();
+        Bundle args = new Bundle();
+        //args.putInt("position", position);
+        f.setArguments(args);
 
-
+        return f;
+    }
+*/
     public interface passInterface{
        // void itemSelected(int item);
         void createInstance2(ViewPager vp);
@@ -57,7 +64,9 @@ public class PagerFragment extends Fragment implements Serializable {
 
     }
     public void createInstance(){
-          parentActivity.createInstance2(vp);
+       //   parentActivity.createInstance2(vp);
+        vp.setAdapter(fa);
+        vp.getAdapter().notifyDataSetChanged();
     }
     public void saveViewer(WebView web){
         wv = web;
@@ -65,22 +74,19 @@ public class PagerFragment extends Fragment implements Serializable {
     public void passPager(ArrayList<PageViewerFragment> p){
         fragments2 = p;
     }
-    public static PagerFragment newInstance(ArrayList<PageViewerFragment> array) {
+   /* public static PagerFragment newInstance(ArrayList<PageViewerFragment> array) {
         PagerFragment p = new PagerFragment();
-        ArrayList<PageViewerFragment> fragments2 = new ArrayList<>();
+      //  fragments2 = new ArrayList<>();
         Bundle args = new Bundle();
-        args.putSerializable("array", array);
+     //   args.putSerializable("array", array);
         p.setArguments(args);
         return p;
-    }
+    }*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null) {
-            fragments2 = (ArrayList<PageViewerFragment>) savedInstanceState.getSerializable("array");
-        }
-        else{
-            fragments2 = null;
+        if(getArguments() != null){
+            fragments2= getArguments().getParcelableArrayList("Array");
         }
       /*  Bundle b = new Bundle();
         if(b != null) {
@@ -94,7 +100,7 @@ public class PagerFragment extends Fragment implements Serializable {
             fragments2 = null;
         }*/
        // fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
-        this.setRetainInstance(true);
+       // this.setRetainInstance(true);
     }
 
 
@@ -106,32 +112,31 @@ public class PagerFragment extends Fragment implements Serializable {
 
         vp = l.findViewById(R.id.viewPager);
 
-      //  fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
+        fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
 
   //      vp.setAdapter(fa);
 //        vp.getAdapter().notifyDataSetChanged();
 
         if(savedInstanceState != null){
-            position = savedInstanceState.getInt("position");
+           fragments2 = savedInstanceState.getParcelableArrayList("Array");
+            /* position = savedInstanceState.getInt("position");
             wv.restoreState(savedInstanceState);
            // fragments2 = new ArrayList<>();
             fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
-            vp.setCurrentItem(position);
+            vp.setCurrentItem(position);*/
         }
-
+        vp.setAdapter(fa);
+        vp.getAdapter().notifyDataSetChanged();
         return l;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState){
-        super.onSaveInstanceState(outState);
+       // outState.putParcelableArrayList("Array",fragments2);
+        outState.putParcelableArrayList("Array",fragments2);
+        this.setRetainInstance(true);
 
-        //outState.putInt("item", vp.getCurrentItem());
-       // outState.putInt(currentItem);
-        outState.getBundle("array");
-        outState.putInt("position",position);
-        outState.putAll(outState);
-       // outState.getBundle("fragments");
+
     }
 
 }

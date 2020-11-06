@@ -2,9 +2,11 @@ package edu.temple.webbrowserapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -18,10 +20,9 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.ArrayList;
 
 public class FragmentAdapter extends FragmentStatePagerAdapter {
-
     ArrayList<PageViewerFragment> fragments;
-   // Activity activity;
     FragmentManager fragmentManager;
+    PageViewerFragment pv;
 
     public FragmentAdapter(@NonNull FragmentManager fm,ArrayList<PageViewerFragment> fragments2) {
         super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -36,6 +37,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return fragments.get(position);
+         return fragments.get(position);
     }
+
 }

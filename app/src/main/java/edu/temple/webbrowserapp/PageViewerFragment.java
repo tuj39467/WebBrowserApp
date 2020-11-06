@@ -9,22 +9,44 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class PageViewerFragment extends Fragment {
+public class PageViewerFragment extends Fragment implements Parcelable {
     WebView wv;
     updateInterface parentActivity;
+    int position;
 
     public PageViewerFragment() {
 
     }
+
+    protected PageViewerFragment(Parcel in) {
+        position = in.readInt();
+    }
+
+
+    public static final Creator<PageViewerFragment> CREATOR = new Creator<PageViewerFragment>() {
+        @Override
+        public PageViewerFragment createFromParcel(Parcel in) {
+            return new PageViewerFragment(in);
+        }
+
+        @Override
+        public PageViewerFragment[] newArray(int size) {
+            return new PageViewerFragment[size];
+        }
+    };
+
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
@@ -35,6 +57,17 @@ public class PageViewerFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(position);
+    }
+
     public interface updateInterface{
         void updateURL(String text);
         void changeTitle(String pageTitle);

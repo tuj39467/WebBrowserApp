@@ -27,8 +27,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BrowserActivity extends AppCompatActivity implements Serializable, PageListFragment.selectInterface, PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
-
+public class BrowserActivity extends AppCompatActivity implements PageListFragment.selectInterface, PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
     PageControlFragment pc;
     PageViewerFragment pv;
     BrowserControlFragment bc;
@@ -38,7 +37,7 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
     FragmentAdapter fa;
     ArrayList<String> pageTitles;
     BaseAdapter ListAdapter;
-    FragmentManager fm;
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -46,13 +45,22 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (fragments == null) {
+      /*  if (savedInstanceState == null) {
             fragments = new ArrayList<>();
         }
-       // FragmentManager fm = getSupportFragmentManager();
-        if(fm == null){
-            fm = getSupportFragmentManager();
+        else{
+            fragments = savedInstanceState.getParcelableArrayList("Array");
+        }*/
+        FragmentManager fm = getSupportFragmentManager();
+        fragments = new ArrayList<>();
+        /*if(savedInstanceState==null){
+            fragments = new ArrayList<>();
         }
+        else{
+            fragments = savedInstanceState.getParcelableArrayList("Array");
+        }
+*/
+
 
         if (fa == null) {
             fa = new FragmentAdapter(fm, fragments);
@@ -82,27 +90,26 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
             fm.beginTransaction().add(R.id.container_4, pl).commit();
         }
 
-       /* if(pv == null){
-            pv = new PageViewerFragment();
-            fragments.add(pv);
-        }
-*/
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
         if (p == null) {
-            p = PagerFragment.newInstance(fragments);
+            p = new PagerFragment();
+            Bundle b = new Bundle();
+            b.putParcelableArrayList("Array", fragments);
+            p.setArguments(b);
             fm.beginTransaction().add(R.id.container_2, p).commit();
         }
-      /*  if(fm.findFragmentById(R.id.container_2) == null) {
-            p = new PagerFragment();
-            pv = new PageViewerFragment();
-            fm.beginTransaction().replace(R.id.container_2, pv).commit();
-        }*/
+
     }
+    @Override
     public void onSaveInstanceState(@NonNull Bundle state)
     {
+      //  state.putParcelableArrayList("Array",fragments);
         super.onSaveInstanceState(state);
-        state.getBundle("fragments");
-
+    }
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle outState) {
+        outState.putParcelableArrayList("Array",fragments);
+        super.onRestoreInstanceState(outState);
     }
     public void DisplayInfo(String website) throws MalformedURLException {
         pv.setInfo(website);
@@ -133,14 +140,12 @@ public class BrowserActivity extends AppCompatActivity implements Serializable, 
 
     public void createNewInstance(){
         final String TAG = "test";
-        Log.d(TAG,"Fragment array size: " + fragments.size() );
-       // p.createInstance();
+
         pv = new PageViewerFragment();
         fragments.add(pv);
-        pl.passList(pageTitles);
+     //   pl.passList(pageTitles);
+        Log.d(TAG,"Fragment array size: " + fragments.size() );
         p.createInstance();
-       // p.passPager(fragments);
-
 
     }
     public void createInstance2(ViewPager vp){
