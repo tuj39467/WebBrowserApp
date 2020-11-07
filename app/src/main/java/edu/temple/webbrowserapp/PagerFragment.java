@@ -39,18 +39,9 @@ public class PagerFragment extends Fragment {
     public PagerFragment() {
 
     }
-   /* public static PageViewerFragment newInstance() {
-        PageViewerFragment f = new PageViewerFragment();
-        Bundle args = new Bundle();
-        //args.putInt("position", position);
-        f.setArguments(args);
 
-        return f;
-    }
-*/
     public interface passInterface{
        // void itemSelected(int item);
-        void createInstance2(ViewPager vp);
     }
 
     public void onAttach(@NonNull Context context) {
@@ -64,43 +55,22 @@ public class PagerFragment extends Fragment {
 
     }
     public void createInstance(){
-       //   parentActivity.createInstance2(vp);
         vp.setAdapter(fa);
         vp.getAdapter().notifyDataSetChanged();
     }
-    public void saveViewer(WebView web){
-        wv = web;
+
+    public void display(int item){
+      //  PageViewerFragment c = fa.getItem(item);
+      //  vp.getCurrentItem();
+        vp.setCurrentItem(item);
     }
-    public void passPager(ArrayList<PageViewerFragment> p){
-        fragments2 = p;
-    }
-   /* public static PagerFragment newInstance(ArrayList<PageViewerFragment> array) {
-        PagerFragment p = new PagerFragment();
-      //  fragments2 = new ArrayList<>();
-        Bundle args = new Bundle();
-     //   args.putSerializable("array", array);
-        p.setArguments(args);
-        return p;
-    }*/
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            fragments2= getArguments().getParcelableArrayList("Array");
+            fragments2 = getArguments().getParcelableArrayList("Array");
         }
-      /*  Bundle b = new Bundle();
-        if(b != null) {
-          //  fragments2 = new ArrayList<>();
-
-            fragments2 = (ArrayList<PageViewerFragment>) b.getSerializable("key");
-            //vp.setCurrentItem(savedInstanceState.getInt("item"));
-          //  vp.setCurrentItem(savedInstanceState.getInt("position"));
-        }
-        else{
-            fragments2 = null;
-        }*/
-       // fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
-       // this.setRetainInstance(true);
     }
 
 
@@ -114,29 +84,19 @@ public class PagerFragment extends Fragment {
 
         fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
 
-  //      vp.setAdapter(fa);
-//        vp.getAdapter().notifyDataSetChanged();
-
         if(savedInstanceState != null){
-           fragments2 = savedInstanceState.getParcelableArrayList("Array");
-            /* position = savedInstanceState.getInt("position");
-            wv.restoreState(savedInstanceState);
-           // fragments2 = new ArrayList<>();
-            fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
-            vp.setCurrentItem(position);*/
+            // fragments2 = savedInstanceState.getParcelableArrayList("Array");
+            vp.setAdapter(fa);
+            vp.getAdapter().notifyDataSetChanged();
         }
-        vp.setAdapter(fa);
-        vp.getAdapter().notifyDataSetChanged();
+       // vp.setAdapter(fa);
+        //vp.getAdapter().notifyDataSetChanged();
         return l;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState){
-       // outState.putParcelableArrayList("Array",fragments2);
         outState.putParcelableArrayList("Array",fragments2);
         this.setRetainInstance(true);
-
-
     }
-
 }

@@ -36,7 +36,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
 
     @NonNull
     @Override
-    public Fragment getItem(int position) {
+    public PageViewerFragment getItem(int position) {
          return fragments.get(position);
     }
 
