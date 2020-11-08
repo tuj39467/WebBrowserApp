@@ -86,34 +86,6 @@ public class PagerFragment extends Fragment {
             vp.setAdapter(fa);
             vp.getAdapter().notifyDataSetChanged();
 
-
-
-
-        /*    vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    parentActivity.updateUrlSlide();
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                   // vp.setCurrentItem(position);
-                    parentActivity.updateUrlSlide();
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                    parentActivity.updateUrlSlide();
-                }
-            }); */
-       /*     vp.setOnTouchListener(new ViewPager.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-
-                    parentActivity.updateUrlSlide();
-                    return true;
-                }
-            }); */
             vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -132,6 +104,22 @@ public class PagerFragment extends Fragment {
             });
         }
 
+        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // parentActivity.updateUrlSlide(position);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                parentActivity.updateUrlSlide(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // parentActivity.updateUrlSlide(state);
+            }
+        });
 
 
 

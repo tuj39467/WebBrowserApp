@@ -23,6 +23,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     FragmentAdapter fa;
     ArrayList<String> pageTitles;
     ArrayList<String> Url;
+    ListView list2;
     BaseAdapter ListAdapter;
     String url;
     String PageTitle;
@@ -92,13 +93,10 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
     public void DisplayInfo(String website) throws MalformedURLException {
         pv.setInfo(website);
-       // pc.updateTheURL(url);
     }
     public void changeTitle(String pageTitle){
-
         Objects.requireNonNull(getSupportActionBar()).setTitle(pageTitle);
         pl.createInstance();
-       // pc.updateTheURL(url);
     }
 
     public void countPages(String pageTitle){
@@ -117,9 +115,11 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         pv.goForward();
     }
     public void updateURL(String text) {
-       // Url.add(text);
+        Url.add(text);
         pc.updateTheURL(text);
-
+       // Url.add(text);
+//        list2.setAdapter(UrlAdapter);
+  //      list2.getAdapter();
     }
 
     public void createNewInstance(){
@@ -130,8 +130,6 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
         Log.d(TAG,"Fragment array size: " + fragments.size() );
         p.createInstance();
-
-
     }
 
     public void itemSelected(int item,ArrayList<PageViewerFragment>f){
@@ -146,9 +144,11 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
    // @Override
     public void updateUrlSlide(int position) {
-        //pc.updateTheURL(Url.get(position));
+        //updateURL(Url.get(position));
 
         changeTitle(pageTitles.get(position));
+        updateURL(Url.get(position));
+        //p.changeTitles(position)
     }
 }
 
