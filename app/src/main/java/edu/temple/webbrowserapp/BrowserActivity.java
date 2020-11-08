@@ -3,17 +3,15 @@ package edu.temple.webbrowserapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-
-
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Objects;
+ import java.net.MalformedURLException;
+ import java.util.ArrayList;
+ import java.util.Objects;
 
 public class BrowserActivity extends AppCompatActivity implements PageListFragment.selectInterface, PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
     PageControlFragment pc;
@@ -24,8 +22,10 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     ArrayList<PageViewerFragment> fragments;
     FragmentAdapter fa;
     ArrayList<String> pageTitles;
+    ArrayList<String> Url;
     BaseAdapter ListAdapter;
-
+    String url;
+    String PageTitle;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -45,7 +45,9 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         if (ListAdapter == null) {
             ListAdapter = new ListAdapter(this, pageTitles);
         }
-
+        if (Url == null) {
+            Url = new ArrayList<>();
+        }
         pc = (PageControlFragment) fm.findFragmentById(R.id.container_1);
         if (pc == null) {
             pc = new PageControlFragment();
@@ -70,8 +72,8 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
         if (p == null && pv == null) {
             p = new PagerFragment();
-           // pv = new PageViewerFragment();
-           // fragments.add(pv);
+            // pv = new PageViewerFragment();
+            // fragments.add(pv);
             Bundle b = new Bundle();
             b.putParcelableArrayList("Array", fragments);
             p.setArguments(b);
@@ -90,30 +92,34 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
     public void DisplayInfo(String website) throws MalformedURLException {
         pv.setInfo(website);
+       // pc.updateTheURL(url);
     }
     public void changeTitle(String pageTitle){
+
         Objects.requireNonNull(getSupportActionBar()).setTitle(pageTitle);
         pl.createInstance();
+       // pc.updateTheURL(url);
     }
 
     public void countPages(String pageTitle){
-       // pl.createInstance();
+        // pl.createInstance();
         final String TAG1 = "test";
         pageTitles.add(pageTitle);
         pl.passList(pageTitles);
-
         Log.d(TAG1,"List array size: " + pageTitles.size() );
-
+      //  pc.updateTheURL(url);
     }
 
     public void goBackInfo() {
-       pv.goBack();
+        pv.goBack();
     }
     public void goForwardInfo() {
         pv.goForward();
     }
     public void updateURL(String text) {
-       pc.updateTheURL(text);
+       // Url.add(text);
+        pc.updateTheURL(text);
+
     }
 
     public void createNewInstance(){
@@ -125,12 +131,11 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         Log.d(TAG,"Fragment array size: " + fragments.size() );
         p.createInstance();
 
+
     }
 
     public void itemSelected(int item,ArrayList<PageViewerFragment>f){
-       // return f.get(item);
         p.display(item);
-
     }
 
     @Override
@@ -139,8 +144,11 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         list.getAdapter();
     }
 
+   // @Override
+    public void updateUrlSlide(int position) {
+        //pc.updateTheURL(Url.get(position));
+
+        changeTitle(pageTitles.get(position));
+    }
 }
-
-
-
 

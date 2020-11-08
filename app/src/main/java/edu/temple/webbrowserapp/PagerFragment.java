@@ -30,7 +30,7 @@ import java.util.Objects;
 
 public class PagerFragment extends Fragment {
     ViewPager vp;
-    int position;
+   // int position;
     passInterface parentActivity;
     ArrayList<PageViewerFragment> fragments2;
     FragmentAdapter fa;//= new FragmentAdapter(getChildFragmentManager(),fragments2);
@@ -41,7 +41,7 @@ public class PagerFragment extends Fragment {
     }
 
     public interface passInterface{
-       // void itemSelected(int item);
+        void updateUrlSlide(int position);
     }
 
     public void onAttach(@NonNull Context context) {
@@ -60,8 +60,6 @@ public class PagerFragment extends Fragment {
     }
 
     public void display(int item){
-      //  PageViewerFragment c = fa.getItem(item);
-      //  vp.getCurrentItem();
         vp.setCurrentItem(item);
     }
 
@@ -73,8 +71,7 @@ public class PagerFragment extends Fragment {
         }
     }
 
-
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,15 +79,62 @@ public class PagerFragment extends Fragment {
 
         vp = l.findViewById(R.id.viewPager);
 
-        fa = new FragmentAdapter(getChildFragmentManager(),fragments2);
+        fa = new FragmentAdapter(getChildFragmentManager(), fragments2);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             // fragments2 = savedInstanceState.getParcelableArrayList("Array");
             vp.setAdapter(fa);
             vp.getAdapter().notifyDataSetChanged();
+
+
+
+
+        /*    vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    parentActivity.updateUrlSlide();
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                   // vp.setCurrentItem(position);
+                    parentActivity.updateUrlSlide();
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    parentActivity.updateUrlSlide();
+                }
+            }); */
+       /*     vp.setOnTouchListener(new ViewPager.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    parentActivity.updateUrlSlide();
+                    return true;
+                }
+            }); */
+            vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    // parentActivity.updateUrlSlide(position);
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    parentActivity.updateUrlSlide(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    // parentActivity.updateUrlSlide(state);
+                }
+            });
         }
-       // vp.setAdapter(fa);
-        //vp.getAdapter().notifyDataSetChanged();
+
+
+
+
         return l;
     }
 

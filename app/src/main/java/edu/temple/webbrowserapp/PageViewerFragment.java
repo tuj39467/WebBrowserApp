@@ -25,6 +25,7 @@ public class PageViewerFragment extends Fragment implements Parcelable {
     WebView wv;
     updateInterface parentActivity;
     int position;
+    String url2;
 
     public PageViewerFragment() {
 
@@ -72,11 +73,14 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         void updateURL(String text);
         void changeTitle(String pageTitle);
         void countPages(String pageTitle);
-      //  void createNewInstance();
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         wv.saveState(outState);
+    }
+
+    public String updateUrl2(){
+        return url2;
     }
 
     public void setInfo(final String urlString) throws MalformedURLException {
@@ -111,10 +115,12 @@ public class PageViewerFragment extends Fragment implements Parcelable {
             }
             @Override
             public void doUpdateVisitedHistory(WebView web, String url, boolean reload) {
-                parentActivity.updateURL(url);
+
                 String pageTitle = web.getTitle();
                 parentActivity.changeTitle(pageTitle);
                 parentActivity.countPages(pageTitle);
+                parentActivity.updateURL(url);
+                url2 = url;
             }
             @Override
             public void onPageFinished(WebView w, String url){
