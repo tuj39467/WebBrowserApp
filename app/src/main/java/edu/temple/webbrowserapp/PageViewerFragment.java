@@ -73,6 +73,7 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         void updateURL(String text);
         void changeTitle(String pageTitle);
         void countPages(String pageTitle);
+        void savedPageTitle(String title);
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -112,12 +113,14 @@ public class PageViewerFragment extends Fragment implements Parcelable {
                 super.onPageStarted(w, url, favicon);
                 String pageTitle = w.getTitle();
                 parentActivity.changeTitle(pageTitle);
+                parentActivity.savedPageTitle(pageTitle);
             }
             @Override
             public void doUpdateVisitedHistory(WebView web, String url, boolean reload) {
 
                 String pageTitle = web.getTitle();
                 parentActivity.changeTitle(pageTitle);
+                parentActivity.savedPageTitle(pageTitle);
                 parentActivity.countPages(pageTitle);
                 parentActivity.updateURL(url);
                 url2 = url;
@@ -127,6 +130,7 @@ public class PageViewerFragment extends Fragment implements Parcelable {
                 super.onPageFinished(w,url);
                 String pageTitle = w.getTitle();
                 parentActivity.changeTitle(pageTitle);
+                parentActivity.savedPageTitle(pageTitle);
             }
             @Override
             public void onLoadResource(WebView web, String url) {

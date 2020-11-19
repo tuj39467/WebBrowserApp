@@ -82,7 +82,7 @@ public class PagerFragment extends Fragment {
         fa = new FragmentAdapter(getChildFragmentManager(), fragments2);
 
         if (savedInstanceState != null) {
-            // fragments2 = savedInstanceState.getParcelableArrayList("Array");
+            fragments2 = savedInstanceState.getParcelableArrayList("Array");
             vp.setAdapter(fa);
             vp.getAdapter().notifyDataSetChanged();
 

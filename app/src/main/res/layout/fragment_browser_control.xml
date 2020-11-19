@@ -8,9 +8,28 @@
 
     <ImageButton
         android:id="@+id/pageButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="74dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="310dp"
         android:src="@android:drawable/ic_menu_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="63dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="34dp"
+        android:src="@android:drawable/ic_input_get"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="173dp"
+        android:src="@android:drawable/ic_menu_save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.BaseAdapter;
@@ -22,11 +24,14 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     ArrayList<PageViewerFragment> fragments;
     FragmentAdapter fa;
     ArrayList<String> pageTitles;
+    ArrayList<String> savedPageTitles;
     ArrayList<String> Url;
     ListView list2;
     BaseAdapter ListAdapter;
+    BaseAdapter SaveListAdapter;
     String url;
     String PageTitle;
+    String savedTitle;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -43,8 +48,14 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         if (pageTitles == null) {
             pageTitles = new ArrayList<>();
         }
+        if (savedPageTitles == null) {
+            savedPageTitles = new ArrayList<>();
+        }
         if (ListAdapter == null) {
             ListAdapter = new ListAdapter(this, pageTitles);
+        }
+        if (SaveListAdapter == null) {
+            SaveListAdapter = new SaveListAdapter(this, savedPageTitles);
         }
         if (Url == null) {
             Url = new ArrayList<>();
@@ -129,7 +140,9 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         fragments.add(pv);
 
         Log.d(TAG,"Fragment array size: " + fragments.size() );
+
         p.createInstance();
+
     }
 
     public void itemSelected(int item,ArrayList<PageViewerFragment>f){
@@ -149,6 +162,26 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         changeTitle(pageTitles.get(position));
         updateURL(Url.get(position));
         //p.changeTitles(position)
+    }
+    public void savedPageTitle(String title){
+        savedTitle = title;
+    }
+
+    public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
+        //final String TAG1 = "test";
+        //String pageTitle = "";
+        savedPageTitles.add(savedTitle);
+      //  pl.passSavedList(pageTitles);
+      //  Log.d(TAG1,"List array size: " + pageTitles.size() );
+    }
+    //public void passSavedList(ListView list){
+
+    //}
+    public void buttonClicked(){
+        Intent ActivityIntent = new Intent(BrowserActivity.this,SavedListActivity.class);
+        //canvasActivityIntent.putExtra("Color",position);
+        startActivity(ActivityIntent);
+
     }
 }
 

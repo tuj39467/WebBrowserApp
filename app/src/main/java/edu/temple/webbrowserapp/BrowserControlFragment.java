@@ -16,6 +16,8 @@ import java.net.MalformedURLException;
 public class BrowserControlFragment extends Fragment {
 
     ImageButton page_Button;
+    ImageButton savePage;
+    ImageButton savedList;
 
     ViewPagerInterface viewPagerFace;
 
@@ -52,6 +54,7 @@ public class BrowserControlFragment extends Fragment {
                              Bundle savedInstanceState) {
         View l = inflater.inflate(R.layout.fragment_browser_control, container, false);
         page_Button = (ImageButton) l.findViewById(R.id.pageButton);
+        savePage = (ImageButton) l.findViewById(R.id.pageButton);
 
         page_Button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,10 +63,26 @@ public class BrowserControlFragment extends Fragment {
             }
         });
 
+        savePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPagerFace.addPage();
+            }
+        });
+
+        savedList.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                viewPagerFace.buttonClicked();
+            }
+        });
+
         return l;
     }
 
     public interface ViewPagerInterface{
         void createNewInstance();
+        void addPage();
+        void buttonClicked();
     }
 }
