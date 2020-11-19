@@ -54,7 +54,8 @@ public class BrowserControlFragment extends Fragment {
                              Bundle savedInstanceState) {
         View l = inflater.inflate(R.layout.fragment_browser_control, container, false);
         page_Button = (ImageButton) l.findViewById(R.id.pageButton);
-        savePage = (ImageButton) l.findViewById(R.id.pageButton);
+        savePage = (ImageButton) l.findViewById(R.id.saveButton);
+        savedList = (ImageButton)l.findViewById(R.id.savedListButton);
 
         page_Button.setOnClickListener(new View.OnClickListener() {
             @Override

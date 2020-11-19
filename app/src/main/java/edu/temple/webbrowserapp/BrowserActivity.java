@@ -179,9 +179,8 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     //}
     public void buttonClicked(){
         Intent ActivityIntent = new Intent(BrowserActivity.this,SavedListActivity.class);
-        //canvasActivityIntent.putExtra("Color",position);
+        ActivityIntent.putStringArrayListExtra("Save",savedPageTitles);
         startActivity(ActivityIntent);
-
     }
 }
 
