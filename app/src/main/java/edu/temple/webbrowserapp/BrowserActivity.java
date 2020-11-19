@@ -161,7 +161,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
         changeTitle(pageTitles.get(position));
         updateURL(Url.get(position));
-        //p.changeTitles(position)
+        //p.changeTitles(position)/
     }
     public void savedPageTitle(String title){
         savedTitle = title;
