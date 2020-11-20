@@ -42,6 +42,7 @@ public class PagerFragment extends Fragment {
 
     public interface passInterface{
         void updateUrlSlide(int position);
+      //  void passSave(int pos);
     }
 
     public void onAttach(@NonNull Context context) {

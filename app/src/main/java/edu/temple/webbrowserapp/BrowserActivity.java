@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.pdf.PdfDocument;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
- import java.net.MalformedURLException;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.MalformedURLException;
  import java.util.ArrayList;
  import java.util.Objects;
 
@@ -32,12 +37,34 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     String url;
     String PageTitle;
     String savedTitle;
+    //int pos;
+    String newSavedTitle;
+    SharedPreferences preferences;
+    File file;
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        file = new File(getFilesDir(),"myFile");
+        preferences = getPreferences(MODE_PRIVATE);
+
+        if(file.exists()){
+            try{
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                StringBuilder text = new StringBuilder();
+                String line;
+                while((line = br.readLine()) != null){
+                    text.append(line);
+                    text.append('\n');
+                }
+                br.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         FragmentManager fm = getSupportFragmentManager();
         fragments = new ArrayList<>();
@@ -84,12 +111,25 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
         if (p == null && pv == null) {
             p = new PagerFragment();
-            // pv = new PageViewerFragment();
+           //  pv = new PageViewerFragment();
             // fragments.add(pv);
             Bundle b = new Bundle();
             b.putParcelableArrayList("Array", fragments);
             p.setArguments(b);
             fm.beginTransaction().add(R.id.container_2, p).commit();
+        }
+
+        Intent intent = getIntent();
+        String web = intent.getStringExtra("position");
+        if(web != null) {
+            try {
+               // pv = new PageViewerFragment();
+                //pv.setInfo(web);
+                createNewInstance();
+                pv.setInfo(web);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
     }
     @Override
@@ -168,19 +208,33 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
 
     public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
-        //final String TAG1 = "test";
+        final String TAG1 = "test";
         //String pageTitle = "";
         savedPageTitles.add(savedTitle);
       //  pl.passSavedList(pageTitles);
-      //  Log.d(TAG1,"List array size: " + pageTitles.size() );
+        Log.d(TAG1,"List array size: " + pageTitles.size() );
     }
-    //public void passSavedList(ListView list){
 
-    //}
     public void buttonClicked(){
-        Intent ActivityIntent = new Intent(BrowserActivity.this,SavedListActivity.class);
+        Intent ActivityIntent = new Intent(BrowserActivity.this, BookmarksActivity.class);
         ActivityIntent.putStringArrayListExtra("Save",savedPageTitles);
+        ActivityIntent.putStringArrayListExtra("Url",Url);
         startActivity(ActivityIntent);
+/*
+        pv = new PageViewerFragment();
+        fragments.add(pv);
+        Intent intent = getIntent();
+        //  String web = intent.getStringExtra("position");
+        int pos = intent.getIntExtra("position",0);
+       itemSelected(pos,fragments);
+*/
+        // createNewInstance();
+        //pc.updateTheURL(web);
     }
+
+
+
+
+
 }
 
