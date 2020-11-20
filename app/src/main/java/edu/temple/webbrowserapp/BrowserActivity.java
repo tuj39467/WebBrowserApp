@@ -81,9 +81,9 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         if (ListAdapter == null) {
             ListAdapter = new ListAdapter(this, pageTitles);
         }
-        if (SaveListAdapter == null) {
-            SaveListAdapter = new SaveListAdapter(this, savedPageTitles);
-        }
+       // if (SaveListAdapter == null) {
+       //     SaveListAdapter = new SaveListAdapter(this, savedPageTitles);
+       // }
         if (Url == null) {
             Url = new ArrayList<>();
         }

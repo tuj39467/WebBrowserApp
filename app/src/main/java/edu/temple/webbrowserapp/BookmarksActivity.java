@@ -1,14 +1,18 @@
 package edu.temple.webbrowserapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -16,6 +20,7 @@ public class BookmarksActivity extends AppCompatActivity {
     ListView savedList;
     BaseAdapter SaveListAdapter;
     TextView text;
+    ImageButton dialogButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +30,6 @@ public class BookmarksActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final ArrayList<String> savedPageTitles = intent.getStringArrayListExtra("Save");
         final ArrayList<String> savedUrls = intent.getStringArrayListExtra("Url");
-
-        //TextView text = new TextView(this);
-        text = findViewById(R.id.textView);
-        text.setGravity(4);
-        text.setTextSize(30);
 
         SaveListAdapter = new SaveListAdapter(this, savedPageTitles);
         savedList = findViewById(R.id.list);
@@ -42,8 +42,6 @@ public class BookmarksActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent ReverseActivityIntent = new Intent(BookmarksActivity.this,BrowserActivity.class);
                 ReverseActivityIntent.putExtra("position",savedUrls.get(position));
-                //ReverseActivityIntent.putStringArrayListExtra("")
-                //ReverseActivityIntent.putExtra("position",position);
                 startActivity(ReverseActivityIntent);
             }
         });
