@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -192,6 +193,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
         final String TAG1 = "test";
         savedPageTitles.add(savedTitle);
+        Toast.makeText(this, "Page bookmarked", Toast.LENGTH_SHORT).show();
         Log.d(TAG1,"List array size: " + pageTitles.size() );
     }
 

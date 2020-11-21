@@ -44,7 +44,7 @@ public class SaveListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, ViewGroup parent){
         ViewHolder vh;
         View v = convertView;
         if(v == null) {
@@ -74,6 +74,8 @@ public class SaveListAdapter extends BaseAdapter {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 Toast.makeText(context, "Bookmark deleted", Toast.LENGTH_SHORT).show();
+                                savedPageTitles.remove(position);
+                                notifyDataSetChanged();
                                 dialog.dismiss();
                             }
                         })

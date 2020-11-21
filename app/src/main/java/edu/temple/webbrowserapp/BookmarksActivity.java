@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 public class BookmarksActivity extends AppCompatActivity {
     ListView savedList;
     BaseAdapter SaveListAdapter;
-    BaseAdapter ListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
