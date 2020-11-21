@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:layout_height="match_parent"
     tools:context=".BookmarksActivity">
 
@@ -12,7 +13,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        android:focusable="false"
+       />
 
     <ListView
         android:id="@+id/list"
@@ -27,7 +30,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:focusable="false"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package edu.temple.webbrowserapp;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -35,7 +36,7 @@ public class ListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent){
         TextView textView;
         if(convertView == null) {
-            textView = new TextView(context);
+             textView = new TextView(context);
         }
         else{
             textView = (TextView) convertView;

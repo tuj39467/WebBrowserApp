@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -19,8 +20,7 @@ import java.util.ArrayList;
 public class BookmarksActivity extends AppCompatActivity {
     ListView savedList;
     BaseAdapter SaveListAdapter;
-    TextView text;
-    ImageButton dialogButton;
+    BaseAdapter ListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +40,12 @@ public class BookmarksActivity extends AppCompatActivity {
         savedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent ReverseActivityIntent = new Intent(BookmarksActivity.this,BrowserActivity.class);
                 ReverseActivityIntent.putExtra("position",savedUrls.get(position));
                 startActivity(ReverseActivityIntent);
             }
         });
-
-
     }
 
 

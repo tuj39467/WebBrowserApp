@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,28 +45,21 @@ public class SaveListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-      //  TextView textView;
-        //ImageButton dialogButton;
         ViewHolder vh;
-        if(convertView == null) {
+        View v = convertView;
+        if(v == null) {
             vh = new ViewHolder();
-   //         textView = new TextView(context);
-            //vh.dialogButton = new ImageButton(context);
-
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.activity_saved_list, null);
-
-            vh.textView = convertView.findViewById(R.id.textView);
-            vh.dialogButton = convertView.findViewById(R.id.removeButton);
+            v = inflater.inflate(R.layout.activity_saved_list, null);
+            vh.textView = v.findViewById(R.id.textView);
+            vh.dialogButton = v.findViewById(R.id.removeButton);
+            v.setTag(vh);
         }
-        else{
-            //textView = (TextView) convertView;
-            vh = (ViewHolder) convertView.getTag();
-            //dialogButton = (ImageButton) convertView;
-        }
-        vh.textView.setText(getItem(position).toString());
 
-        vh.dialogButton.setOnClickListener(new View.OnClickListener() {
+        ViewHolder vhs = (ViewHolder) v.getTag();
+        vhs.textView.setText(getItem(position).toString());
+
+        vhs.dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -85,7 +79,6 @@ public class SaveListAdapter extends BaseAdapter {
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                //Toast.makeText(BookmarksActivity.this, "I didn't think so", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             }
                         });
@@ -98,7 +91,7 @@ public class SaveListAdapter extends BaseAdapter {
             }
         });
 
-        return convertView;
+        return v;
     }
 
 }

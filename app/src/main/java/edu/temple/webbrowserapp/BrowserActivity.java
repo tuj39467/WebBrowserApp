@@ -31,14 +31,8 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     ArrayList<String> pageTitles;
     ArrayList<String> savedPageTitles;
     ArrayList<String> Url;
-    ListView list2;
     BaseAdapter ListAdapter;
-    BaseAdapter SaveListAdapter;
-    String url;
-    String PageTitle;
     String savedTitle;
-    //int pos;
-    String newSavedTitle;
     SharedPreferences preferences;
     File file;
 
@@ -81,9 +75,6 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         if (ListAdapter == null) {
             ListAdapter = new ListAdapter(this, pageTitles);
         }
-       // if (SaveListAdapter == null) {
-       //     SaveListAdapter = new SaveListAdapter(this, savedPageTitles);
-       // }
         if (Url == null) {
             Url = new ArrayList<>();
         }
@@ -151,12 +142,9 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
 
     public void countPages(String pageTitle){
-        // pl.createInstance();
-        final String TAG1 = "test";
         pageTitles.add(pageTitle);
         pl.passList(pageTitles);
-        Log.d(TAG1,"List array size: " + pageTitles.size() );
-      //  pc.updateTheURL(url);
+
     }
 
     public void goBackInfo() {
@@ -168,9 +156,6 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     public void updateURL(String text) {
         Url.add(text);
         pc.updateTheURL(text);
-       // Url.add(text);
-//        list2.setAdapter(UrlAdapter);
-  //      list2.getAdapter();
     }
 
     public void createNewInstance(){
@@ -197,11 +182,8 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
    // @Override
     public void updateUrlSlide(int position) {
-        //updateURL(Url.get(position));
-
         changeTitle(pageTitles.get(position));
         updateURL(Url.get(position));
-        //p.changeTitles(position)/
     }
     public void savedPageTitle(String title){
         savedTitle = title;
@@ -209,9 +191,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
     public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
         final String TAG1 = "test";
-        //String pageTitle = "";
         savedPageTitles.add(savedTitle);
-      //  pl.passSavedList(pageTitles);
         Log.d(TAG1,"List array size: " + pageTitles.size() );
     }
 
@@ -220,21 +200,6 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         ActivityIntent.putStringArrayListExtra("Save",savedPageTitles);
         ActivityIntent.putStringArrayListExtra("Url",Url);
         startActivity(ActivityIntent);
-/*
-        pv = new PageViewerFragment();
-        fragments.add(pv);
-        Intent intent = getIntent();
-        //  String web = intent.getStringExtra("position");
-        int pos = intent.getIntExtra("position",0);
-       itemSelected(pos,fragments);
-*/
-        // createNewInstance();
-        //pc.updateTheURL(web);
     }
-
-
-
-
-
 }
 
