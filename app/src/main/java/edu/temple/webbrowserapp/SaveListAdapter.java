@@ -52,6 +52,7 @@ public class SaveListAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             v = inflater.inflate(R.layout.activity_saved_list, null);
             vh.textView = v.findViewById(R.id.textView);
+           // vh.dialogButton = new ImageButton(context);
             vh.dialogButton = v.findViewById(R.id.removeButton);
             v.setTag(vh);
         }
