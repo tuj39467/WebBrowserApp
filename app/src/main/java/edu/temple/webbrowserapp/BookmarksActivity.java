@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 
 public class BookmarksActivity extends AppCompatActivity {
@@ -37,7 +38,6 @@ public class BookmarksActivity extends AppCompatActivity {
 
         SaveListAdapter = new SaveListAdapter(this, savedPageTitles);
         savedList = findViewById(R.id.list);
-
 
         savedList.setAdapter(SaveListAdapter);
         savedList.getAdapter();

@@ -21,7 +21,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
  import java.util.ArrayList;
- import java.util.Objects;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class BrowserActivity extends AppCompatActivity implements PageListFragment.selectInterface, PagerFragment.passInterface, PageViewerFragment.updateInterface, PageControlFragment.passInfoInterface, BrowserControlFragment.ViewPagerInterface{
     PageControlFragment pc;
@@ -37,41 +38,14 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     String url;
     BaseAdapter ListAdapter;
     String savedTitle;
-    SharedPreferences preferences;
-  //  SharedPreferences.Editor editor;
-    File file;
-    String filename;
     String web;
-    Boolean autoSave;
-
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // filename = "myFile";
-        //file = new File(getFilesDir(),filename);
-      //  preferences = getPreferences(MODE_PRIVATE);
-       /* autoSave = preferences.getBoolean("autoSave",false);
 
-        if(autoSave && file.exists()){
-
-            try{
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                StringBuilder text = new StringBuilder();
-                String line;
-                while((line = br.readLine()) != null){
-                    text.append(line);
-                    text.append('\n');
-                }
-                br.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-*/
         FragmentManager fm = getSupportFragmentManager();
         fragments = new ArrayList<>();
 
@@ -114,8 +88,6 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
         if (p == null && pv == null) {
             p = new PagerFragment();
-           //  pv = new PageViewerFragment();
-            // fragments.add(pv);
             Bundle b = new Bundle();
             b.putParcelableArrayList("Array", fragments);
             p.setArguments(b);
@@ -126,27 +98,12 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         web = intent.getStringExtra("position");
         if(web != null) {
             try {
-                //editor.putString("key",web);
-                //editor.apply();
                 createNewInstance();
                 pv.setInfo(web);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         }
-       // }
-      /*  if (autoSave){
-            try {
-                FileOutputStream outputStream  = new FileOutputStream(file);
-                outputStream.write(web.toString().getBytes());
-                outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            file.delete();
-        }}*/
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle state)
@@ -216,20 +173,30 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
     public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
         Toast.makeText(this, "Page bookmarked", Toast.LENGTH_SHORT).show();
-       // savedPageTitles.add(savedTitle);
+        StringBuilder sb = new StringBuilder();
+        savedPageTitles.add(savedTitle);
         Url.add(url);
 
-        SharedPreferences pref = getSharedPreferences("autoSave",MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("element",savedTitle);
+        for(String s: savedPageTitles){
+            sb.append(s);
+            sb.append(",");
+        }
+
+        SharedPreferences prefer = getSharedPreferences("element",0);
+        SharedPreferences.Editor editor = prefer.edit();
+        editor.putString("element", sb.toString());
         editor.apply();
     }
 
     public void buttonClicked(){
-        SharedPreferences pref = getSharedPreferences("autoSave",MODE_PRIVATE);
-        String web2 = pref.getString("element",savedTitle);
-        savedPageTitles.add(savedTitle);
 
+        savedPageTitles.removeAll(savedPageTitles);
+        SharedPreferences pref = getSharedPreferences("element",0);
+        String web2 = pref.getString("element", "");
+        String[] items = web2.split(",");
+        savedPageTitles.addAll(Arrays.asList(items));
+
+        //savedPageTitles.add(web2);
 
         Intent ActivityIntent = new Intent(BrowserActivity.this, BookmarksActivity.class);
         ActivityIntent.putStringArrayListExtra("Save",savedPageTitles);
