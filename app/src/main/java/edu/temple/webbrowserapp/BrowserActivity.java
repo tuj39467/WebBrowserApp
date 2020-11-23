@@ -1,24 +1,24 @@
 package edu.temple.webbrowserapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.OnLifecycleEvent;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.MalformedURLException;
  import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +35,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     ArrayList<String> pageTitles;
     ArrayList<String> savedPageTitles;
     ArrayList<String> Url;
+    ArrayList<String> Url2;
     String url;
     BaseAdapter ListAdapter;
     String savedTitle;
@@ -63,6 +64,9 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         }
         if (Url == null) {
             Url = new ArrayList<>();
+        }
+        if (Url2 == null) {
+            Url2 = new ArrayList<>();
         }
         pc = (PageControlFragment) fm.findFragmentById(R.id.container_1);
         if (pc == null) {
@@ -97,6 +101,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         Intent intent = getIntent();
         web = intent.getStringExtra("position");
         if(web != null) {
+           // Log.d("Serial","p:" + web);
             try {
                 createNewInstance();
                 pv.setInfo(web);
@@ -105,6 +110,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             }
         }
     }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle state)
     {
@@ -142,15 +148,9 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
 
     public void createNewInstance(){
-        final String TAG = "test";
-
         pv = new PageViewerFragment();
         fragments.add(pv);
-
-        Log.d(TAG,"Fragment array size: " + fragments.size() );
-
         p.createInstance();
-
     }
 
     public void itemSelected(int item,ArrayList<PageViewerFragment>f){
@@ -172,10 +172,19 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
 
     public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
-        Toast.makeText(this, "Page bookmarked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Page Saved!", Toast.LENGTH_SHORT).show();
+
         StringBuilder sb = new StringBuilder();
         savedPageTitles.add(savedTitle);
-        Url.add(url);
+        Url2.add(url);
+
+      //  Url.add(url);
+        StringBuilder sb2 = new StringBuilder();
+
+        for(String s: Url2){
+            sb2.append(s);
+            sb2.append(",");
+        }
 
         for(String s: savedPageTitles){
             sb.append(s);
@@ -184,23 +193,36 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
         SharedPreferences prefer = getSharedPreferences("element",0);
         SharedPreferences.Editor editor = prefer.edit();
-        editor.putString("element", sb.toString());
+        editor.putString("elements", sb.toString());
         editor.apply();
+
+        SharedPreferences prefer2 = getSharedPreferences("element2",0);
+        SharedPreferences.Editor editor2 = prefer2.edit();
+        editor2.putString("elements2", sb2.toString());
+        editor2.apply();
+
     }
 
     public void buttonClicked(){
 
         savedPageTitles.removeAll(savedPageTitles);
-        SharedPreferences pref = getSharedPreferences("element",0);
-        String web2 = pref.getString("element", "");
+        SharedPreferences pref = getSharedPreferences("element",MODE_PRIVATE);
+        String web2 = pref.getString("elements", "Google");
         String[] items = web2.split(",");
         savedPageTitles.addAll(Arrays.asList(items));
 
-        //savedPageTitles.add(web2);
+        Url2.removeAll(Url2);
+       // Url.removeAll(Url);
+        SharedPreferences pref2 = getSharedPreferences("element2",MODE_PRIVATE);
+        String web3 = pref2.getString("elements2", "google.com");
+        String[] items2 = web3.split(",");
+        Url2.addAll(Arrays.asList(items2));
+      //  Url.addAll(Arrays.asList(items2));
+
 
         Intent ActivityIntent = new Intent(BrowserActivity.this, BookmarksActivity.class);
         ActivityIntent.putStringArrayListExtra("Save",savedPageTitles);
-        ActivityIntent.putStringArrayListExtra("Url",Url);
+        ActivityIntent.putStringArrayListExtra("Url",Url2);
         startActivity(ActivityIntent);
     }
 }

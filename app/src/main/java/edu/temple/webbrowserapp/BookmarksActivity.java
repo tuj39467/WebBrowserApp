@@ -21,12 +21,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 
 public class BookmarksActivity extends AppCompatActivity {
     ListView savedList;
     BaseAdapter SaveListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +49,10 @@ public class BookmarksActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent ReverseActivityIntent = new Intent(BookmarksActivity.this,BrowserActivity.class);
-                ReverseActivityIntent.putExtra("position",savedUrls.get(position));
+                ReverseActivityIntent.putExtra("position", savedUrls.get(position));
+              //  Log.d("Cereal","p:" + position);
                 startActivity(ReverseActivityIntent);
             }
         });
     }
-
-
-
 }
