@@ -29,10 +29,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class PagerFragment extends Fragment {
-    ViewPager vp;
+
    // int position;
     passInterface parentActivity;
     ArrayList<PageViewerFragment> fragments2;
+    ViewPager vp;
     FragmentAdapter fa;//= new FragmentAdapter(getChildFragmentManager(),fragments2);
     WebView wv;
 
@@ -55,10 +56,7 @@ public class PagerFragment extends Fragment {
         }
 
     }
-    public void createInstance(){
-        vp.setAdapter(fa);
-        vp.getAdapter().notifyDataSetChanged();
-    }
+
 
     public void display(int item){
         vp.setCurrentItem(item);
@@ -126,7 +124,10 @@ public class PagerFragment extends Fragment {
 
         return l;
     }
-
+    public void createInstance(){
+        vp.setAdapter(fa);
+        vp.getAdapter().notifyDataSetChanged();
+    }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState){
         outState.putParcelableArrayList("Array",fragments2);

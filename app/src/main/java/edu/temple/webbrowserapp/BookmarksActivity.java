@@ -50,7 +50,9 @@ public class BookmarksActivity extends AppCompatActivity {
 
                 Intent ReverseActivityIntent = new Intent(BookmarksActivity.this,BrowserActivity.class);
                 ReverseActivityIntent.putExtra("position", savedUrls.get(position));
-              //  Log.d("Cereal","p:" + position);
+              //  ReverseActivityIntent.putExtra("array",savedUrls);
+               // ReverseActivityIntent.putExtra("pos",position);
+                setResult(RESULT_OK,ReverseActivityIntent);
                 startActivity(ReverseActivityIntent);
             }
         });

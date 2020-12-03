@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.OnLifecycleEvent;
+import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.AttributeSet;
@@ -19,6 +21,11 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.MalformedURLException;
  import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,15 +38,19 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     PageListFragment pl;
     PagerFragment p;
     ArrayList<PageViewerFragment> fragments;
+    ArrayList<PageViewerFragment> savedFragments;
     FragmentAdapter fa;
     ArrayList<String> pageTitles;
     ArrayList<String> savedPageTitles;
     ArrayList<String> Url;
     ArrayList<String> Url2;
     String url;
+    ViewPager vp;
     BaseAdapter ListAdapter;
     String savedTitle;
+    FragmentManager fm;
     String web;
+    int pos;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -49,6 +60,8 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
         FragmentManager fm = getSupportFragmentManager();
         fragments = new ArrayList<>();
+
+        vp=new ViewPager(this);
 
         if (fa == null) {
             fa = new FragmentAdapter(fm, fragments);
@@ -68,6 +81,8 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         if (Url2 == null) {
             Url2 = new ArrayList<>();
         }
+        savedFragments = new ArrayList<>();
+
         pc = (PageControlFragment) fm.findFragmentById(R.id.container_1);
         if (pc == null) {
             pc = new PageControlFragment();
@@ -75,10 +90,10 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         }
 
         bc = (BrowserControlFragment) fm.findFragmentById((R.id.container_3));
-        if (bc == null) {
+       // if (bc == null) {
             bc = new BrowserControlFragment();
             fm.beginTransaction().add(R.id.container_3, bc).commit();
-        }
+       // }
 
         pl = (PageListFragment) fm.findFragmentById(R.id.container_4);
         if (pl == null) {
@@ -88,29 +103,51 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             pl.setArguments(b);
             fm.beginTransaction().add(R.id.container_4, pl).commit();
         }
-
+       // p = new PagerFragment();
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
-        if (p == null && pv == null) {
+        //pv = (PageViewerFragment)fm.findFragmentById(R.id.container_2);
+        if (pv == null) {
             p = new PagerFragment();
+            //pv = new PageViewerFragment();
             Bundle b = new Bundle();
             b.putParcelableArrayList("Array", fragments);
             p.setArguments(b);
             fm.beginTransaction().add(R.id.container_2, p).commit();
         }
 
+        Intent intentExternal = getIntent();
+        String action = intentExternal.getAction();
+        String type = intentExternal.getType();
+        if(Intent.ACTION_SEND.equals(action) && type != null){
+            if("text/plain".equals(type)){
+                try {
+                    handleString(intentExternal);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         Intent intent = getIntent();
+        //pos = intent.getIntExtra("pos",0);
         web = intent.getStringExtra("position");
+       // Url2 = intent.getStringArrayListExtra("array");
+       // createNewInstance();
         if(web != null) {
-           // Log.d("Serial","p:" + web);
             try {
                 createNewInstance();
                 pv.setInfo(web);
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         }
     }
-
+    public void handleString(Intent intent) throws MalformedURLException {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        createNewInstance();
+        pv.setInfo(sharedText);
+    }
     @Override
     public void onSaveInstanceState(@NonNull Bundle state)
     {
@@ -174,11 +211,11 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
         Toast.makeText(this, "Page Saved!", Toast.LENGTH_SHORT).show();
 
-        StringBuilder sb = new StringBuilder();
         savedPageTitles.add(savedTitle);
         Url2.add(url);
+      //  savedFragments.add(pv);
 
-      //  Url.add(url);
+        StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
 
         for(String s: Url2){
@@ -191,19 +228,18 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             sb.append(",");
         }
 
-        SharedPreferences prefer = getSharedPreferences("element",0);
+        SharedPreferences prefer = getSharedPreferences("element",MODE_PRIVATE);
         SharedPreferences.Editor editor = prefer.edit();
         editor.putString("elements", sb.toString());
         editor.apply();
 
-        SharedPreferences prefer2 = getSharedPreferences("element2",0);
+        SharedPreferences prefer2 = getSharedPreferences("element2",MODE_PRIVATE);
         SharedPreferences.Editor editor2 = prefer2.edit();
         editor2.putString("elements2", sb2.toString());
         editor2.apply();
-
     }
 
-    public void buttonClicked(){
+    public void buttonClicked() {
 
         savedPageTitles.removeAll(savedPageTitles);
         SharedPreferences pref = getSharedPreferences("element",MODE_PRIVATE);
@@ -212,18 +248,18 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         savedPageTitles.addAll(Arrays.asList(items));
 
         Url2.removeAll(Url2);
-       // Url.removeAll(Url);
         SharedPreferences pref2 = getSharedPreferences("element2",MODE_PRIVATE);
-        String web3 = pref2.getString("elements2", "google.com");
-        String[] items2 = web3.split(",");
+        String Web3 = pref2.getString("elements2", "google.com");
+        String[] items2 = Web3.split(",");
         Url2.addAll(Arrays.asList(items2));
-      //  Url.addAll(Arrays.asList(items2));
+
 
 
         Intent ActivityIntent = new Intent(BrowserActivity.this, BookmarksActivity.class);
         ActivityIntent.putStringArrayListExtra("Save",savedPageTitles);
         ActivityIntent.putStringArrayListExtra("Url",Url2);
-        startActivity(ActivityIntent);
+        ActivityIntent.putExtra("fragments",savedFragments);
+        startActivityForResult(ActivityIntent,1);
     }
 }
 

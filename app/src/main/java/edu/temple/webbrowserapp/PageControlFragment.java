@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -40,6 +45,8 @@ public class PageControlFragment extends Fragment {
     ImageButton goButton;
     ImageButton nextButton;
     ImageButton backButton;
+
+    File file;
 
     passInfoInterface parentActivity;
 
@@ -62,9 +69,8 @@ public class PageControlFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.setRetainInstance(true);
     }
-    public void updateTheURL(String text){
+    public void updateTheURL(String text) {
         urlText.setText(text);
-
     }
 
     @Override

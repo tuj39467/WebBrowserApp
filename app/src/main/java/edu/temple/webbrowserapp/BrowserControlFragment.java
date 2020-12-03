@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import java.net.MalformedURLException;
-
 public class BrowserControlFragment extends Fragment {
 
     ImageButton page_Button;
@@ -80,6 +78,9 @@ public class BrowserControlFragment extends Fragment {
 
         return l;
     }
+    //public void newPage(){
+  //      viewPagerFace.createNewInstance();
+    //}
 
     public interface ViewPagerInterface{
         void createNewInstance();
