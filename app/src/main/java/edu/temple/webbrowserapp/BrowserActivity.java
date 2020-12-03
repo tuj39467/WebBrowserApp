@@ -13,13 +13,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -51,12 +56,16 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     FragmentManager fm;
     String web;
     int pos;
+    ImageButton sendButton;
+    PopupMenu menu;
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sendButton = (ImageButton) findViewById(R.id.sendButton);
 
         FragmentManager fm = getSupportFragmentManager();
         fragments = new ArrayList<>();
@@ -115,10 +124,39 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             fm.beginTransaction().add(R.id.container_2, p).commit();
         }
 
+       /* sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu = new PopupMenu(BrowserActivity.this, findViewById(R.id.sendButton));
+
+              /*  menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if (item.getItemId() == R.id.action_camera) {
+                            Toast.makeText(MainActivity.this, "You clicked on the Camera in the Popup Menu", Toast.LENGTH_LONG).show();
+                            return true;
+                        } else if (item.getItemId() == R.id.action_rotate){
+                            RotateAnimation animButton=new RotateAnimation(0,360,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                            animButton.setDuration(700);
+                            animButton.setFillAfter(true);
+
+                            menuButton.startAnimation(animButton);
+                        }
+                        return false;
+                    }
+                });
+            }
+            menu.inflate(R.menu.menu_main);
+            menu.show();
+        });
+*/
+
+
         Intent intentExternal = getIntent();
         String action = intentExternal.getAction();
         String type = intentExternal.getType();
-        if(Intent.ACTION_SEND.equals(action) && type != null){
+        if(Intent.ACTION_VIEW.equals(action) && type != null){
             if("text/plain".equals(type)){
                 try {
                     handleString(intentExternal);
@@ -127,12 +165,26 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
                 }
             }
         }
+        //sending link
+
+        /*
+        final Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);//
+        Uri uri = Uri.parse("https://www.temple.edu");
+        sendIntent.putExtra(Intent.EXTRA_TEXT,uri.toString());
+        sendIntent.setType("text/plain");
+        final Intent shareIntent = Intent.createChooser(sendIntent,null);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://www.temple.edu")));
+                startActivity(sendIntent);
+            }
+        });*/
 
         Intent intent = getIntent();
-        //pos = intent.getIntExtra("pos",0);
         web = intent.getStringExtra("position");
-       // Url2 = intent.getStringArrayListExtra("array");
-       // createNewInstance();
+
         if(web != null) {
             try {
                 createNewInstance();
@@ -148,6 +200,33 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         createNewInstance();
         pv.setInfo(sharedText);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.sendButton) {
+            final Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);//
+            //Uri uri = Uri.parse("https://www.temple.edu");
+            Uri uri = Uri.parse(url);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,uri.toString());
+            sendIntent.setType("text/plain");
+            final Intent shareIntent = Intent.createChooser(sendIntent,null);
+            startActivity(shareIntent);
+           // Toast.makeText(BrowserActivity.this, "You clicked on the Camera in the Action Bar", Toast.LENGTH_LONG).show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle state)
     {
