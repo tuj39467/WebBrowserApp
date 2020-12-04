@@ -75,6 +75,7 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         void changeTitle(String pageTitle);
         void countPages(String pageTitle);
         void savedPageTitle(String title);
+        void attachedPage() throws MalformedURLException;
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -151,7 +152,11 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         if(savedInstanceState != null){
             wv.restoreState(savedInstanceState);
         }
-
+        try {
+            parentActivity.attachedPage();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         return l;
     }
 

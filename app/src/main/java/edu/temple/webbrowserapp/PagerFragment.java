@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class PagerFragment extends Fragment {
     public interface passInterface{
         void updateUrlSlide(int position);
       //  void passSave(int pos);
+        void attachedPager() throws MalformedURLException;
     }
 
     public void onAttach(@NonNull Context context) {
@@ -46,14 +48,14 @@ public class PagerFragment extends Fragment {
         }
 
     }
-    public static PagerFragment newInstance() {
+   /* public static PagerFragment newInstance() {
         PagerFragment p = new PagerFragment();
 
        // Bundle bundle = new Bundle();
         //bundle.putParcelableArrayList("f", f);
         //p.setArguments(bundle);
         return p;
-    }
+    }*/
 
     public void display(int item){
         vp.setCurrentItem(item);
@@ -118,6 +120,11 @@ public class PagerFragment extends Fragment {
             }
         });
 
+        try {
+            parentActivity.attachedPager();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
 
         return l;

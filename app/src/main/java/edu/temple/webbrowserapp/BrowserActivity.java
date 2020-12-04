@@ -121,67 +121,61 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
         if (pv == null) {
-            //p = new PagerFragment();
-            p = PagerFragment.newInstance();
+            p = new PagerFragment();
+            //p = PagerFragment.newInstance();
         //    pv = PageViewerFragment.newInstance();
             Bundle b = new Bundle();
             b.putParcelableArrayList("Array", fragments);
             p.setArguments(b);
             fm.beginTransaction().add(R.id.container_2, p).commit();
-           // fm.executePendingTransactions();
         }
 
         intentExternal = getIntent();
         action = intentExternal.getAction();
-      //  Toast.makeText(getApplicationContext(),action, Toast.LENGTH_LONG).show();
-     //   stored = Uri.parse(stored.toString());
         stored = intentExternal.getData();
+
+        Intent intent = getIntent();
+        web = intent.getStringExtra("position");
         //Toast.makeText(getApplicationContext(),stored.toString(), Toast.LENGTH_LONG).show();
-        //  onStart();///////////////
-        /*if(Intent.ACTION_VIEW.equals(action)){
+       // createNewInstance(" ");
+        if(web != null) {
+            createNewInstance();
             try {
-                handleString(intentExternal);
+                pv.setInfo(web);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+        }
+       /* if(stored != null){
+            createNewInstance("google.com");
+            try {
+                pv.setInfo("google.com");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         }*/
-        Intent intent = getIntent();
-        web = intent.getStringExtra("position");
-
-        if(web != null) {
-            createNewInstance(web);
-            //pv.setInfo(web);
-
-        }
        // onStart();
     }
+
 
     @Override
     protected void onStart(){
         super.onStart();
-        Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
-       // if(Intent.ACTION_VIEW.equals(action)){
-
-        try {
-            handleString(intentExternal);
+       // Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show();
+        //handleString(intentExternal);
+        createNewInstance();
+/*        try {
+            pv.setInfo("https:www.temple.edu");
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
-        // String sharedText = intentExternal.getType().toString();
-       // Toast.makeText(getApplicationContext(),stored.toString(), Toast.LENGTH_LONG).show();
-//        createNewInstance(stored.toString());
-       // try {
-//            DisplayInfo(stored.toString());
-      //  } catch (MalformedURLException e) {
-     //       e.printStackTrace();
-    //    }
-        // }
+        }*/
     }
 
     public void handleString(Intent i) throws MalformedURLException {
-        String sharedText = i.getType();
-//        Toast.makeText(getApplicationContext(),sharedText, Toast.LENGTH_LONG).show();
-        createNewInstance(sharedText);
+        String sharedText = i.getData().toString();
+        Toast.makeText(getApplicationContext(),sharedText, Toast.LENGTH_LONG).show();
+       // createNewInstance(sharedText);
         //pv.setInfo(sharedText);
     }
 
@@ -207,8 +201,14 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
         return super.onOptionsItemSelected(item);
     }
-
-
+    public void attachedPage() throws MalformedURLException {
+        Intent intentExt = getIntent();
+        String url = intentExt.getDataString();
+        pv.setInfo(url);
+    }
+    public void attachedPager(){
+        p.createInstance();
+    }
     @Override
     public void onSaveInstanceState(@NonNull Bundle state)
     {
@@ -245,9 +245,9 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         pc.updateTheURL(text);
     }
 
-    public void createNewInstance(String page){
-      //  pv = new PageViewerFragment();
-        pv= PageViewerFragment.newInstance(page);
+    public void createNewInstance(){
+        pv = new PageViewerFragment();
+        //pv= PageViewerFragment.newInstance(page);
         fragments.add(pv);
         p.createInstance();
         //pv.setInfo(page);
