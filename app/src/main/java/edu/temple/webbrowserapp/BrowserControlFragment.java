@@ -58,7 +58,7 @@ public class BrowserControlFragment extends Fragment {
         page_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               viewPagerFace.createNewInstance();
+               viewPagerFace.createNewInstance(" ");
             }
         });
 
@@ -83,7 +83,7 @@ public class BrowserControlFragment extends Fragment {
     //}
 
     public interface ViewPagerInterface{
-        void createNewInstance();
+        void createNewInstance(String page);
         void addPage();
         void buttonClicked();
     }

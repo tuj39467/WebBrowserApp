@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.viewpager.widget.ViewPager;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -58,16 +60,20 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     int pos;
     ImageButton sendButton;
     PopupMenu menu;
+    Bundle saved;
+    String action;
+    Uri stored;
+    Intent intentExternal;
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        saved = savedInstanceState;
         sendButton = (ImageButton) findViewById(R.id.sendButton);
 
-        FragmentManager fm = getSupportFragmentManager();
+        fm = getSupportFragmentManager();
         fragments = new ArrayList<>();
 
         vp=new ViewPager(this);
@@ -99,10 +105,10 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         }
 
         bc = (BrowserControlFragment) fm.findFragmentById((R.id.container_3));
-       // if (bc == null) {
+        if (bc == null) {
             bc = new BrowserControlFragment();
             fm.beginTransaction().add(R.id.container_3, bc).commit();
-       // }
+        }
 
         pl = (PageListFragment) fm.findFragmentById(R.id.container_4);
         if (pl == null) {
@@ -112,49 +118,71 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             pl.setArguments(b);
             fm.beginTransaction().add(R.id.container_4, pl).commit();
         }
-       // p = new PagerFragment();
+
         p = (PagerFragment) fm.findFragmentById(R.id.container_2);
-        //pv = (PageViewerFragment)fm.findFragmentById(R.id.container_2);
         if (pv == null) {
-            p = new PagerFragment();
-            //pv = new PageViewerFragment();
+            //p = new PagerFragment();
+            p = PagerFragment.newInstance();
+        //    pv = PageViewerFragment.newInstance();
             Bundle b = new Bundle();
             b.putParcelableArrayList("Array", fragments);
             p.setArguments(b);
             fm.beginTransaction().add(R.id.container_2, p).commit();
+           // fm.executePendingTransactions();
         }
 
-        Intent intentExternal = getIntent();
-        String action = intentExternal.getAction();
-        //String type = intentExternal.getType();
-        if(Intent.ACTION_VIEW.equals(action)){
-           // if("text/plain".equals(type)){
-                try {
-                    handleString(intentExternal);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+        intentExternal = getIntent();
+        action = intentExternal.getAction();
+      //  Toast.makeText(getApplicationContext(),action, Toast.LENGTH_LONG).show();
+     //   stored = Uri.parse(stored.toString());
+        stored = intentExternal.getData();
+        //Toast.makeText(getApplicationContext(),stored.toString(), Toast.LENGTH_LONG).show();
+        //  onStart();///////////////
+        /*if(Intent.ACTION_VIEW.equals(action)){
+            try {
+                handleString(intentExternal);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
-       // }
-
-
+        }*/
         Intent intent = getIntent();
         web = intent.getStringExtra("position");
 
         if(web != null) {
-            try {
-                createNewInstance();
-                pv.setInfo(web);
+            createNewInstance(web);
+            //pv.setInfo(web);
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
         }
+       // onStart();
     }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Toast.makeText(getApplicationContext(),"Now onStart() calls", Toast.LENGTH_LONG).show(); //onStart Called
+       // if(Intent.ACTION_VIEW.equals(action)){
+
+        try {
+            handleString(intentExternal);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        // String sharedText = intentExternal.getType().toString();
+       // Toast.makeText(getApplicationContext(),stored.toString(), Toast.LENGTH_LONG).show();
+//        createNewInstance(stored.toString());
+       // try {
+//            DisplayInfo(stored.toString());
+      //  } catch (MalformedURLException e) {
+     //       e.printStackTrace();
+    //    }
+        // }
+    }
+
     public void handleString(Intent i) throws MalformedURLException {
         String sharedText = i.getType();
-        createNewInstance();
-        pv.setInfo(sharedText);
+//        Toast.makeText(getApplicationContext(),sharedText, Toast.LENGTH_LONG).show();
+        createNewInstance(sharedText);
+        //pv.setInfo(sharedText);
     }
 
     @Override
@@ -217,10 +245,12 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         pc.updateTheURL(text);
     }
 
-    public void createNewInstance(){
-        pv = new PageViewerFragment();
+    public void createNewInstance(String page){
+      //  pv = new PageViewerFragment();
+        pv= PageViewerFragment.newInstance(page);
         fragments.add(pv);
         p.createInstance();
+        //pv.setInfo(page);
     }
 
     public void itemSelected(int item,ArrayList<PageViewerFragment>f){
@@ -240,6 +270,7 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     public void savedPageTitle(String title){
         savedTitle = title;
     }
+
 
     public void addPage(){//adds page to list of bookmarked pages after clicking "save page" button
         Toast.makeText(this, "Page Saved!", Toast.LENGTH_SHORT).show();
@@ -285,8 +316,6 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
         String Web3 = pref2.getString("elements2", "google.com");
         String[] items2 = Web3.split(",");
         Url2.addAll(Arrays.asList(items2));
-
-
 
         Intent ActivityIntent = new Intent(BrowserActivity.this, BookmarksActivity.class);
         ActivityIntent.putStringArrayListExtra("Save",savedPageTitles);

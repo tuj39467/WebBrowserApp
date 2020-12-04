@@ -2,35 +2,25 @@ package edu.temple.webbrowserapp;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class PagerFragment extends Fragment {
 
-   // int position;
+   // public static ViewPager vp;
+    // int position;
+    Context context;
     passInterface parentActivity;
     ArrayList<PageViewerFragment> fragments2;
     ViewPager vp;
@@ -56,7 +46,14 @@ public class PagerFragment extends Fragment {
         }
 
     }
+    public static PagerFragment newInstance() {
+        PagerFragment p = new PagerFragment();
 
+       // Bundle bundle = new Bundle();
+        //bundle.putParcelableArrayList("f", f);
+        //p.setArguments(bundle);
+        return p;
+    }
 
     public void display(int item){
         vp.setCurrentItem(item);
@@ -66,6 +63,7 @@ public class PagerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
+           // fragments2 = getArguments().getParcelableArrayList("f");
             fragments2 = getArguments().getParcelableArrayList("Array");
         }
     }
@@ -126,7 +124,7 @@ public class PagerFragment extends Fragment {
     }
     public void createInstance(){
         vp.setAdapter(fa);
-        vp.getAdapter().notifyDataSetChanged();
+        Objects.requireNonNull(vp.getAdapter()).notifyDataSetChanged();
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState){

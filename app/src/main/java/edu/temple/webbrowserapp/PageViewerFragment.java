@@ -20,6 +20,7 @@ import android.webkit.WebViewClient;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class PageViewerFragment extends Fragment implements Parcelable {
     WebView wv;
@@ -99,7 +100,13 @@ public class PageViewerFragment extends Fragment implements Parcelable {
             wv.goForward();
         }
     }
-
+    public static PageViewerFragment newInstance(String s) {
+        PageViewerFragment p = new PageViewerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("stored", s);
+        p.setArguments(bundle);
+        return p;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -151,6 +158,9 @@ public class PageViewerFragment extends Fragment implements Parcelable {
    @Override
    public void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
+       if(getArguments() != null){
+           url2 = getArguments().getString("Array");
+       }
        this.setRetainInstance(true);
    }
 
