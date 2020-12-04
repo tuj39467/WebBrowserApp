@@ -89,11 +89,24 @@ public class PageControlFragment extends Fragment {
             public void onClick(View v) {
                 Thread t = new Thread();
                 String urlString = urlText.getText().toString();
-                if(!urlString.startsWith("https://")){
+
+              /*  if(urlString.startsWith("http://")){
+                    String url = "https://" + urlString;
+                    urlText.setText(url);
+                }*/
+
+                if(urlString.startsWith("http://")){ //||!urlString.startsWith("http://")){
+                    urlString = urlString.replace("http://","https://");
+                  //  urlString = "s://" + urlString;
+                    urlText.setText(urlString);
+                }
+                else if(!urlString.startsWith("https://")){ //||!urlString.startsWith("http://")){
 
                     urlString = "https://" + urlString;
                     urlText.setText(urlString);
                 }
+
+
 
                 try {
                     parentActivity.DisplayInfo(urlString);

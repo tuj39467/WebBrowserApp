@@ -203,12 +203,16 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
     }
     public void attachedPage() throws MalformedURLException {
         Intent intentExt = getIntent();
-        String url = intentExt.getDataString();
-        pv.setInfo(url);
+        String url2 = intentExt.getDataString();
+            if (url2.startsWith("http://")) {
+                url2 = url2.replace("http://", "https://");
+            }
+        pv.setInfo(url2);
     }
     public void attachedPager(){
         p.createInstance();
     }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle state)
     {
