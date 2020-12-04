@@ -124,63 +124,19 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             fm.beginTransaction().add(R.id.container_2, p).commit();
         }
 
-       /* sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menu = new PopupMenu(BrowserActivity.this, findViewById(R.id.sendButton));
-
-              /*  menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        if (item.getItemId() == R.id.action_camera) {
-                            Toast.makeText(MainActivity.this, "You clicked on the Camera in the Popup Menu", Toast.LENGTH_LONG).show();
-                            return true;
-                        } else if (item.getItemId() == R.id.action_rotate){
-                            RotateAnimation animButton=new RotateAnimation(0,360,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-                            animButton.setDuration(700);
-                            animButton.setFillAfter(true);
-
-                            menuButton.startAnimation(animButton);
-                        }
-                        return false;
-                    }
-                });
-            }
-            menu.inflate(R.menu.menu_main);
-            menu.show();
-        });
-*/
-
-
         Intent intentExternal = getIntent();
         String action = intentExternal.getAction();
-        String type = intentExternal.getType();
-        if(Intent.ACTION_VIEW.equals(action) && type != null){
-            if("text/plain".equals(type)){
+        //String type = intentExternal.getType();
+        if(Intent.ACTION_VIEW.equals(action)){
+           // if("text/plain".equals(type)){
                 try {
                     handleString(intentExternal);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
             }
-        }
-        //sending link
+       // }
 
-        /*
-        final Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);//
-        Uri uri = Uri.parse("https://www.temple.edu");
-        sendIntent.putExtra(Intent.EXTRA_TEXT,uri.toString());
-        sendIntent.setType("text/plain");
-        final Intent shareIntent = Intent.createChooser(sendIntent,null);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://www.temple.edu")));
-                startActivity(sendIntent);
-            }
-        });*/
 
         Intent intent = getIntent();
         web = intent.getStringExtra("position");
@@ -195,8 +151,8 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
             }
         }
     }
-    public void handleString(Intent intent) throws MalformedURLException {
-        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+    public void handleString(Intent i) throws MalformedURLException {
+        String sharedText = i.getType();
         createNewInstance();
         pv.setInfo(sharedText);
     }
@@ -213,14 +169,12 @@ public class BrowserActivity extends AppCompatActivity implements PageListFragme
 
         if (id == R.id.sendButton) {
             final Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);//
-            //Uri uri = Uri.parse("https://www.temple.edu");
+            sendIntent.setAction(Intent.ACTION_SEND);
             Uri uri = Uri.parse(url);
             sendIntent.putExtra(Intent.EXTRA_TEXT,uri.toString());
             sendIntent.setType("text/plain");
             final Intent shareIntent = Intent.createChooser(sendIntent,null);
             startActivity(shareIntent);
-           // Toast.makeText(BrowserActivity.this, "You clicked on the Camera in the Action Bar", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
